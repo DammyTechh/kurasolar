@@ -1,0 +1,97 @@
+# Supabase CLI configuration for KuraSolar.
+# Local development: `supabase start`. Hosted projects read the [functions.*]
+# blocks on deploy; auth settings must also be set in the dashboard (see docs/DEPLOYMENT.md).
+
+project_id = "kurasolar"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 16
+
+[db.seed]
+enabled = false  # All seed data lives in the single migration.
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "10MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/**", "https://kurasolar.ng/**"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+# Customers sign up with an email code; there is no public password sign-up.
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+otp_length = 6
+otp_expiry = 900
+max_frequency = "30s"
+
+[auth.rate_limit]
+email_sent = 30
+token_verifications = 30
+
+# All auth emails (sign-in codes, email change, etc.) are rendered by our
+# branded templates and delivered through Resend.
+[auth.hook.send_email]
+enabled = true
+uri = "http://host.docker.internal:54321/functions/v1/auth-email-hook"
+secrets = "env(SEND_EMAIL_HOOK_SECRET)"
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+deno_version = 2
+
+[functions.assessment-calculate]
+verify_jwt = true
+
+[functions.payment-initialize]
+verify_jwt = true
+
+[functions.payment-verify]
+verify_jwt = true
+
+[functions.report-download]
+verify_jwt = true
+
+[functions.admin-actions]
+verify_jwt = true
+
+# Public endpoints: callers may be anonymous. Each validates input and rate limits.
+[functions.admin-login]
+verify_jwt = false
+
+[functions.installer-request]
+verify_jwt = false
+
+[functions.enquiry-submit]
+verify_jwt = false
+
+# Called by Paystack and Supabase Auth; authenticated by signature instead of JWT.
+[functions.paystack-webhook]
+verify_jwt = false
+
+[functions.auth-email-hook]
+verify_jwt = false

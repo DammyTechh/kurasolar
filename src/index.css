@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+
+/*
+ * Brand tokens. Defaults below match the seeded `brand` setting; the
+ * SiteProvider overwrites them at runtime from Admin → Branding, so colours
+ * are never hard-coded in components.
+ */
+:root {
+  --ks-primary: #5b2a86;
+  --ks-primary-dark: #34184a;
+  --ks-accent: #c8973f;
+  --ks-ink: #1e1428;
+  --ks-surface: #f6f2fa;
+  --ks-success: #15803d;
+  --ks-warning: #b45309;
+  --ks-danger: #b91c1c;
+}
+
+@theme inline {
+  --font-sans: 'Ubuntu', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-primary: var(--ks-primary);
+  --color-primary-dark: var(--ks-primary-dark);
+  --color-accent: var(--ks-accent);
+  --color-ink: var(--ks-ink);
+  --color-surface: var(--ks-surface);
+  --color-success: var(--ks-success);
+  --color-warning: var(--ks-warning);
+  --color-danger: var(--ks-danger);
+  --color-muted: color-mix(in oklab, var(--ks-ink) 62%, white);
+  --color-line: color-mix(in oklab, var(--ks-primary) 14%, white);
+  --color-tint: color-mix(in oklab, var(--ks-primary) 7%, white);
+
+  --radius-card: 1.25rem;
+  --radius-control: 0.75rem;
+
+  --shadow-lift: 0 1px 0 color-mix(in oklab, var(--ks-primary-dark) 6%, transparent),
+    0 12px 32px -18px color-mix(in oklab, var(--ks-primary-dark) 45%, transparent);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    font-feature-settings: 'kern';
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold tracking-tight text-ink;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ks-accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--ks-accent) 35%, white);
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1200px] px-5 sm:px-8;
+  }
+  .prose-ks {
+    @apply max-w-[68ch] text-[1.0625rem] leading-relaxed text-ink/85;
+  }
+  .prose-ks h2 {
+    @apply mt-10 mb-3 text-2xl;
+  }
+  .prose-ks h3 {
+    @apply mt-8 mb-2 text-xl;
+  }
+  .prose-ks p,
+  .prose-ks ul,
+  .prose-ks ol {
+    @apply mb-4;
+  }
+  .prose-ks ul {
+    @apply list-disc pl-5;
+  }
+  .prose-ks ol {
+    @apply list-decimal pl-5;
+  }
+  .prose-ks a {
+    @apply font-medium text-primary underline decoration-accent/60 underline-offset-4;
+  }
+  .prose-ks strong {
+    @apply font-medium text-ink;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
