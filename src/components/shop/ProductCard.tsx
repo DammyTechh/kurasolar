@@ -18,14 +18,14 @@ export function ProductCard({ product }: { product: Product }) {
     <article className="group flex flex-col">
       <Link to={`/product/${product.slug}`} className="relative block aspect-[5/4] overflow-hidden rounded-[var(--radius-card)] bg-tint">
         <ProductArt src={product.images[0]} role={product.product_role} alt={product.name} className="transition-transform duration-500 group-hover:scale-[1.03]" />
-        {out && <span className="absolute top-3 left-3 rounded-full bg-white px-2.5 py-1 text-xs font-medium text-muted">Out of stock</span>}
+        {out && <span className="absolute top-3 left-3 rounded-full bg-white px-3 py-1 text-xs font-medium text-muted">Out of stock</span>}
       </Link>
       <div className="mt-3 flex flex-1 flex-col">
         {product.brand && <p className="text-xs text-muted">{product.brand}</p>}
-        <Link to={`/product/${product.slug}`} className="mt-0.5 font-medium leading-snug text-ink hover:text-primary">{product.name}</Link>
+        <Link to={`/product/${product.slug}`} className="mt-1 font-medium leading-snug text-ink hover:text-primary">{product.name}</Link>
         <div className="mt-auto flex items-center justify-between gap-3 pt-3">
           <div className="flex items-baseline gap-2">
-            <span className="num font-bold text-ink">{money(product.price, product.currency)}</span>
+            <span className="num font-semibold text-ink">{money(product.price, product.currency)}</span>
             {product.compare_at_price && Number(product.compare_at_price) > Number(product.price) && (
               <span className="num text-sm text-muted line-through">{money(product.compare_at_price, product.currency)}</span>
             )}

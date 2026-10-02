@@ -14,15 +14,29 @@ export const useCountries = () =>
   useQuery({
     queryKey: ['public', 'countries'],
     staleTime: LONG,
-    queryFn: () => rows<Country[]>(supabase.from('countries').select('*').eq('is_active', true).order('sort_order')),
+    queryFn: () => rows<Country[]>(
+      supabase.from('countries').select('*').eq('is_active', true).order('sort_order').order('name').limit(500),
+    ),
   });
+
+/**
+ * Countries split for the <select>: the markets we serve directly first, then
+ * everywhere else alphabetically. `sort_order` below 100 marks a primary market.
+ */
+export const usePrimaryMarkets = () => {
+  const q = useCountries();
+  const all = q.data ?? [];
+  return { ...q, primary: all.filter((c) => c.sort_order < 100), rest: all.filter((c) => c.sort_order >= 100) };
+};
 
 export const useRegions = (countryCode?: string | null) =>
   useQuery({
     queryKey: ['public', 'regions', countryCode],
     enabled: Boolean(countryCode),
     staleTime: LONG,
-    queryFn: () => rows<Region[]>(supabase.from('regions').select('*').eq('country_code', countryCode!).eq('is_active', true).order('name')),
+    queryFn: () => rows<Region[]>(
+      supabase.from('regions').select('*').eq('country_code', countryCode!).eq('is_active', true).order('name').limit(1000),
+    ),
   });
 
 /** Nigerian states (used for addresses and installer filters). */

@@ -54,10 +54,10 @@ export default function QuotePage() {
   }
 
   return (
-    <div className="container-page py-10 sm:py-14">
+    <div className="container-page py-12 sm:py-16">
       <PageHeader title="Request a quote" text="Tell us what you need. We’ll confirm availability, delivery and installation costs." />
       <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <Card className="grid gap-5 p-5 sm:grid-cols-2 sm:p-8">
+        <Card className="grid gap-6 p-6 sm:grid-cols-2 sm:p-8">
           <Input label="Full name" autoComplete="name" {...f.bind('full_name')} />
           <Input label="Email" type="email" autoComplete="email" {...f.bind('email')} />
           <Input label="Phone" type="tel" autoComplete="tel" {...f.bind('phone')} />
@@ -65,7 +65,7 @@ export default function QuotePage() {
           <Textarea wrapClassName="sm:col-span-2" label="Anything else we should know?" optional rows={5} {...f.bind('message')} />
           <div className="sm:col-span-2"><Button size="lg" onClick={submit} loading={busy}>Send quote request</Button></div>
         </Card>
-        <Card className="p-5 sm:p-7">
+        <Card className="p-6 sm:p-8">
           <h2 className="text-lg">Items</h2>
           {cart.lines.length === 0 ? (
             <p className="mt-3 text-sm text-muted">No items in your cart. That’s fine; describe what you need in the message.</p>

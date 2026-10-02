@@ -19,10 +19,10 @@ export default function SignInPage() {
   if (ready && user) return <Navigate to={next} replace />;
 
   return (
-    <div className="container-page grid items-center gap-12 py-12 sm:py-20 lg:grid-cols-2">
+    <div className="container-page grid items-center gap-12 py-12 sm:py-24 lg:grid-cols-2">
       <div className="max-w-md">
-        <h1 className="text-[2rem] leading-tight sm:text-5xl">Sign in or create an account</h1>
-        <p className="mt-4 text-[1.0625rem] text-muted">Keep your assessments, reports, orders and installer requests in one place. We’ll email you a one-time code; no password to remember.</p>
+        <h1 className="text-3xl leading-tight sm:text-5xl">Sign in or create an account</h1>
+        <p className="mt-4 text-base text-muted">Keep your assessments, reports, orders and installer requests in one place. We’ll email you a one-time code; no password to remember.</p>
       </div>
       <Card className="w-full max-w-md p-6 sm:p-8 lg:justify-self-end">
         <OtpSignIn onSignedIn={() => nav(next, { replace: true })} />

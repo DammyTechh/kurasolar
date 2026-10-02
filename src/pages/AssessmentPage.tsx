@@ -83,10 +83,10 @@ export default function AssessmentPage() {
 
 function Figure({ icon, label, value, unit, sub, className }: { icon: React.ReactNode; label: string; value: string; unit?: string; sub?: string; className?: string }) {
   return (
-    <div className={cn('rounded-[var(--radius-card)] border border-line bg-white p-5', className)}>
+    <div className={cn('rounded-[var(--radius-card)] border border-line bg-white p-6', className)}>
       <div className="flex items-center gap-2 text-sm text-muted">{icon}{label}</div>
-      <p className="mt-3 flex items-baseline gap-1.5">
-        <span className="num text-3xl font-bold tracking-tight">{value}</span>
+      <p className="mt-3 flex items-baseline gap-2">
+        <span className="num text-3xl font-semibold tracking-tight">{value}</span>
         {unit && <span className="text-muted">{unit}</span>}
       </p>
       {sub && <p className="mt-1 text-sm text-muted">{sub}</p>}
@@ -118,7 +118,7 @@ function LockedView({ a }: { a: Assessment }) {
   return (
     <>
       <div className="mt-6 max-w-2xl">
-        <h1 className="text-[1.75rem] leading-tight sm:text-4xl">Your solar assessment is ready.</h1>
+        <h1 className="text-3xl leading-tight sm:text-4xl">Your solar assessment is ready.</h1>
         <p className="mt-2 text-muted">
           {[a.city, a.state, a.country].filter(Boolean).join(', ')}, {a.appliance_count} appliance{a.appliance_count === 1 ? '' : 's'}, calculated {date(a.created_at)}.
         </p>
@@ -143,14 +143,14 @@ function LockedView({ a }: { a: Assessment }) {
             ].map((f) => (
               <div key={f.label} className="rounded-2xl bg-surface p-4">
                 <div className="flex items-center gap-2 text-sm text-muted">{f.icon}{f.label}</div>
-                <p className="num mt-2 text-2xl font-bold blur-[7px] select-none">{f.v}</p>
+                <p className="num mt-2 text-2xl font-semibold blur-[7px] select-none">{f.v}</p>
                 <p className="text-sm text-muted blur-[5px] select-none">{f.s}</p>
               </div>
             ))}
           </div>
-          <ul className="mt-6 grid gap-2.5 text-sm text-ink/85 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-3 text-sm text-ink/85 sm:grid-cols-2">
             {['Full appliance inventory and daily energy', 'PV, inverter and battery sizing', 'Three battery options with backup times', 'Matched equipment list from our stock', 'Engineering assumptions and notes', 'Professional PDF you can share'].map((t) => (
-              <li key={t} className="flex items-start gap-2"><FileText className="mt-0.5 size-4 shrink-0 text-accent" />{t}</li>
+              <li key={t} className="flex items-start gap-2"><FileText className="mt-1 size-4 shrink-0 text-accent" />{t}</li>
             ))}
           </ul>
           <div className="mt-6">
@@ -163,9 +163,9 @@ function LockedView({ a }: { a: Assessment }) {
           <h2 className="mt-4 text-xl">Unlock your complete professional load assessment</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted">One-off consultation fee. Your report unlocks as soon as Paystack confirms the payment with our server.</p>
           {currencies.length > 1 && (
-            <div className="mt-5 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Currency">
+            <div className="mt-6 grid grid-cols-2 gap-2" role="radiogroup" aria-label="Currency">
               {currencies.map((cur) => (
-                <button key={cur} type="button" role="radio" aria-checked={currency === cur} onClick={() => setCurrency(cur)} className={cn('rounded-xl border px-3 py-2.5 text-left text-sm', currency === cur ? 'border-primary bg-tint' : 'border-line')}>
+                <button key={cur} type="button" role="radio" aria-checked={currency === cur} onClick={() => setCurrency(cur)} className={cn('rounded-xl border px-3 py-3 text-left text-sm', currency === cur ? 'border-primary bg-tint' : 'border-line')}>
                   <span className="block text-xs text-muted">{cur}</span>
                   <span className="num font-medium">{money(c.fees[cur], cur)}</span>
                 </button>
@@ -176,7 +176,7 @@ function LockedView({ a }: { a: Assessment }) {
             Pay {money(fee, currency)} & unlock report
           </Button>
           <p className="mt-3 text-center text-xs text-muted">Card, bank transfer or USSD via Paystack</p>
-          <div className="mt-6 border-t border-line pt-5">
+          <div className="mt-6 border-t border-line pt-6">
             <p className="text-sm font-medium">Need an installer now?</p>
             <p className="mt-1 text-sm text-muted">You can request one without paying for the report.</p>
             <ButtonLink to={`/solar-installers/request?assessment=${a.id}`} variant="secondary" size="sm" className="mt-3">Connect me with an installer</ButtonLink>
@@ -224,9 +224,9 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
 
   return (
     <>
-      <div className="mt-6 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+      <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
-          <h1 className="text-[1.75rem] leading-tight sm:text-4xl">Your recommended system</h1>
+          <h1 className="text-3xl leading-tight sm:text-4xl">Your recommended system</h1>
           <p className="mt-2 text-muted">
             {a.customer_name ? `${a.customer_name}, ` : ''}{[a.city, a.state, a.country].filter(Boolean).join(', ')}. Paid {date(a.paid_at)}.
           </p>
@@ -251,7 +251,7 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
       <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <Card className="p-6 sm:p-8">
           <h2 className="text-xl">Load summary</h2>
-          <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+          <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
             {[
               ['Connected load', `${num(res.summary.connectedLoadKw, 2)} kW`],
               ['Peak running load', `${num(res.summary.peakLoadKw, 2)} kW`],
@@ -262,18 +262,18 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
               ['Important load', `${num(res.summary.importantLoadKw, 2)} kW`],
               ['Heavy load', `${num(res.summary.heavyLoadKw, 2)} kW`],
             ].map(([k, v]) => (
-              <div key={k}><dt className="text-muted">{k}</dt><dd className="num mt-0.5 font-medium">{v}</dd></div>
+              <div key={k}><dt className="text-muted">{k}</dt><dd className="num mt-1 font-medium">{v}</dd></div>
             ))}
           </dl>
           {res.summary.highPowerLoads.length > 0 && (
-            <p className="mt-5 text-sm text-warning">High-power loads: {res.summary.highPowerLoads.join(', ')}. Run them in daylight where possible.</p>
+            <p className="mt-6 text-sm text-warning">High-power loads: {res.summary.highPowerLoads.join(', ')}. Run them in daylight where possible.</p>
           )}
         </Card>
 
         <Card className="p-6 sm:p-8">
           <h2 className="text-xl">Battery options</h2>
           <p className="mt-1 text-sm text-muted">LiFePO4, {num(res.assumptions.batteryModuleKwh, 2)} kWh modules. Backup is measured against the average night-time load.</p>
-          <div className="mt-5 space-y-3">
+          <div className="mt-6 space-y-3">
             {res.battery.tiers.map((t) => <TierRow key={t.key} t={t} highlight={t.key === 'standard'} max={res.battery.tiers[res.battery.tiers.length - 1]!.nominalKwh} />)}
           </div>
         </Card>
@@ -293,7 +293,7 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
           )}
         </div>
         {items.length === 0 ? (
-          <p className="mt-5 text-sm text-muted">We’ll confirm matching equipment with you after the site assessment.</p>
+          <p className="mt-6 text-sm text-muted">We’ll confirm matching equipment with you after the site assessment.</p>
         ) : (
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((i) => (
@@ -301,7 +301,7 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
                 <div className="size-20 shrink-0 overflow-hidden rounded-xl"><ProductArt role={i.role} alt={i.name} /></div>
                 <div className="flex min-w-0 flex-1 flex-col">
                   <Link to={`/product/${i.slug}`} className="text-sm leading-snug font-medium hover:text-primary">{i.quantity > 1 ? `${i.quantity} × ` : ''}{i.name}</Link>
-                  <p className="mt-0.5 text-xs text-muted">{i.reason}</p>
+                  <p className="mt-1 text-xs text-muted">{i.reason}</p>
                   <div className="mt-auto flex items-center justify-between pt-2">
                     <span className="num text-sm font-medium">{money(i.unit_price * i.quantity, settings.commerce.currency)}</span>
                     <button type="button" onClick={() => { cart.add({ product_id: i.product_id, slug: i.slug, name: i.name, price: i.unit_price, role: i.role }, i.quantity); toast(`${i.name} added to cart`); }} className="text-sm font-medium text-primary hover:underline">Add to quote</button>
@@ -315,7 +315,7 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
 
       <Card className="mt-6 p-6 sm:p-8">
         <h2 className="text-xl">Appliance inventory</h2>
-        <div className="mt-5 overflow-x-auto">
+        <div className="mt-6 overflow-x-auto">
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr className="border-b border-line text-left text-muted">
@@ -330,12 +330,12 @@ function PaidView({ a, r, appliances }: { a: Assessment; r: AssessmentResult; ap
             <tbody>
               {appliances.map((x) => (
                 <tr key={x.id} className="border-b border-line/70">
-                  <td className="py-2.5 pr-3">{x.name}</td>
-                  <td className="num py-2.5 pr-3 text-right">{x.quantity}</td>
-                  <td className="num py-2.5 pr-3 text-right">{num(x.rated_watts, 0)}</td>
-                  <td className="num py-2.5 pr-3 text-right">{num(x.hours_per_day)}</td>
-                  <td className="num py-2.5 pr-3 text-right">{num(x.daily_kwh, 2)}</td>
-                  <td className="py-2.5">{sentence(x.priority)}</td>
+                  <td className="py-3 pr-3">{x.name}</td>
+                  <td className="num py-3 pr-3 text-right">{x.quantity}</td>
+                  <td className="num py-3 pr-3 text-right">{num(x.rated_watts, 0)}</td>
+                  <td className="num py-3 pr-3 text-right">{num(x.hours_per_day)}</td>
+                  <td className="num py-3 pr-3 text-right">{num(x.daily_kwh, 2)}</td>
+                  <td className="py-3">{sentence(x.priority)}</td>
                 </tr>
               ))}
             </tbody>
@@ -369,7 +369,7 @@ function TierRow({ t, highlight, max }: { t: BatteryTier; highlight: boolean; ma
     <div className={cn('rounded-2xl border p-4', highlight ? 'border-primary bg-tint' : 'border-line')}>
       <div className="flex items-baseline justify-between gap-3">
         <p className="font-medium">{t.label}{highlight && <span className="ml-2 text-xs font-normal text-primary">Recommended</span>}</p>
-        <p className="num font-bold">{num(t.nominalKwh, 2)} kWh</p>
+        <p className="num font-semibold">{num(t.nominalKwh, 2)} kWh</p>
       </div>
       <div className="mt-3 h-1.5 rounded-full bg-white">
         <div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(8, (t.nominalKwh / max) * 100)}%` }} />

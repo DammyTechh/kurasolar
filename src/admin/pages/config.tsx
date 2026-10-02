@@ -24,7 +24,7 @@ function Tabs({ tabs }: { tabs: { key: string; label: string; node: React.ReactN
 }
 
 const Title = ({ t, d }: { t: string; d?: string }) => (
-  <div className="mb-6"><h1 className="text-2xl sm:text-3xl">{t}</h1>{d && <p className="mt-1.5 max-w-2xl text-sm text-muted">{d}</p>}</div>
+  <div className="mb-6"><h1 className="text-2xl sm:text-3xl">{t}</h1>{d && <p className="mt-2 max-w-2xl text-sm text-muted">{d}</p>}</div>
 );
 
 const p = (label: string, hint?: string): Schema => ({ type: 'percent', label, hint });
@@ -168,16 +168,16 @@ export function Account() {
       <Card className="p-6">
         <h2 className="text-lg">Change password</h2>
         <p className="mt-1 text-sm text-muted">Change the seeded password after your first sign-in.</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Input label="New password" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} />
           <Input label="Repeat new password" type="password" autoComplete="new-password" value={pw2} onChange={(e) => setPw2(e.target.value)} />
         </div>
-        <Button className="mt-5" onClick={change} loading={busy}>Change password</Button>
+        <Button className="mt-6" onClick={change} loading={busy}>Change password</Button>
       </Card>
       <Card className="p-6">
         <h2 className="text-lg">Test email delivery</h2>
         <p className="mt-1 text-sm text-muted">Sends a branded test message through Resend.</p>
-        <div className="mt-5 flex flex-wrap items-end gap-3">
+        <div className="mt-6 flex flex-wrap items-end gap-3">
           <Input wrapClassName="flex-1 min-w-60" label="Send to" type="email" value={testTo} onChange={(e) => setTestTo(e.target.value)} />
           <Button variant="secondary" onClick={test} loading={sending}>Send test</Button>
         </div>

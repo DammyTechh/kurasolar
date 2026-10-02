@@ -39,7 +39,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 className="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-2xl border border-line bg-white p-4 text-sm shadow-lift"
                 role={t.tone === 'error' ? 'alert' : 'status'}
               >
-                <I className={`mt-0.5 size-5 shrink-0 ${color[t.tone]}`} aria-hidden />
+                <I className={`mt-1 size-5 shrink-0 ${color[t.tone]}`} aria-hidden />
                 <p className="flex-1 leading-snug text-ink">{t.message}</p>
                 <button type="button" onClick={() => dismiss(t.id)} className="text-muted hover:text-ink" aria-label="Dismiss">
                   <X className="size-4" />

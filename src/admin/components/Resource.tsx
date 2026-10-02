@@ -100,7 +100,7 @@ export function Resource({ config }: { config: ResourceConfig }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl sm:text-3xl">{config.title}</h1>
-          {config.description && <p className="mt-1.5 max-w-2xl text-sm text-muted">{config.description}</p>}
+          {config.description && <p className="mt-2 max-w-2xl text-sm text-muted">{config.description}</p>}
         </div>
         {config.canCreate !== false && config.fields && (
           <Button icon={<Plus className="size-4" />} onClick={() => setEditing({ row: { ...(config.defaults ?? {}) }, isNew: true })}>Add new</Button>
@@ -111,7 +111,7 @@ export function Resource({ config }: { config: ResourceConfig }) {
         {config.search?.length ? (
           <div className="relative w-full sm:w-72">
             <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" />
-            <input className={cn(controlClass, 'h-10 pl-9')} placeholder="Search" value={search} onChange={(e) => { setSearch(e.target.value); setPage(0); }} aria-label="Search" />
+            <input className={cn(controlClass, 'h-10 pl-10')} placeholder="Search" value={search} onChange={(e) => { setSearch(e.target.value); setPage(0); }} aria-label="Search" />
           </div>
         ) : null}
         {config.filters?.map((f) => (
@@ -228,7 +228,7 @@ function ResourceForm({ open, config, row, isNew, onClose, onSaved }: { open: bo
   return (
     <Modal open={open} onClose={onClose} size="lg" title={isNew ? `Add to ${config.title.toLowerCase()}` : 'Edit'}
       footer={<div className="flex justify-end gap-2"><Button variant="ghost" onClick={onClose}>Cancel</Button><Button onClick={save} loading={busy}>{isNew ? 'Create' : 'Save changes'}</Button></div>}>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         {config.fields!.map((f) => <FieldInput key={f.key} field={f} value={values[f.key]} onChange={(v) => set(f.key, v)} />)}
       </div>
     </Modal>
@@ -272,15 +272,15 @@ function TagsInput({ label, hint, value, onChange }: { label: string; hint?: str
   return (
     <div className="sm:col-span-2">
       <p className="text-sm font-medium">{label}</p>
-      <div className="mt-1.5 flex flex-wrap gap-1.5 rounded-[var(--radius-control)] border border-line p-2">
+      <div className="mt-2 flex flex-wrap gap-2 rounded-[var(--radius-control)] border border-line p-2">
         {value.map((t) => (
-          <span key={t} className="flex items-center gap-1 rounded-full bg-tint py-1 pr-1.5 pl-3 text-sm text-primary">
+          <span key={t} className="flex items-center gap-1 rounded-full bg-tint py-1 pr-2 pl-3 text-sm text-primary">
             {t}<button type="button" onClick={() => onChange(value.filter((x) => x !== t))} aria-label={`Remove ${t}`}><X className="size-3.5" /></button>
           </span>
         ))}
         <input className="min-w-40 flex-1 px-2 py-1 text-sm focus:outline-none" value={draft} placeholder="Type and press Enter" onChange={(e) => setDraft(e.target.value)} onBlur={add} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); add(); } }} />
       </div>
-      {hint && <p className="mt-1.5 text-sm text-muted">{hint}</p>}
+      {hint && <p className="mt-2 text-sm text-muted">{hint}</p>}
     </div>
   );
 }
@@ -297,7 +297,7 @@ function KeyValueInput({ label, hint, value, onChange }: { label: string; hint?:
   return (
     <div className="sm:col-span-2">
       <p className="text-sm font-medium">{label}</p>
-      <div className="mt-1.5 space-y-2">
+      <div className="mt-2 space-y-2">
         {rows.map(([k, v], i) => (
           <div key={i} className="grid grid-cols-[1fr_1.4fr_auto] gap-2">
             <input className={cn(controlClass, 'h-10')} placeholder="Name" value={k} onChange={(e) => change(i, 0, e.target.value)} />
@@ -331,7 +331,7 @@ export function ImagesInput({ label, hint, folder, value, onChange, single }: { 
   return (
     <div className="sm:col-span-2">
       <p className="text-sm font-medium">{label}</p>
-      <div className="mt-1.5 flex flex-wrap gap-3">
+      <div className="mt-2 flex flex-wrap gap-3">
         {value.map((src, i) => (
           <div key={src} className="group relative size-24 overflow-hidden rounded-xl border border-line bg-surface">
             <img src={mediaUrl(src)} alt="" className="size-full object-cover" />
@@ -345,7 +345,7 @@ export function ImagesInput({ label, hint, folder, value, onChange, single }: { 
           </label>
         )}
       </div>
-      <p className="mt-1.5 text-sm text-muted">{hint ?? 'PNG, JPG, WebP or GIF up to 5 MB.'}</p>
+      <p className="mt-2 text-sm text-muted">{hint ?? 'PNG, JPG, WebP or GIF up to 5 MB.'}</p>
     </div>
   );
 }

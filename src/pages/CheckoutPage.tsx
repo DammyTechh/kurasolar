@@ -50,12 +50,12 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="container-page py-10 sm:py-14">
+    <div className="container-page py-12 sm:py-16">
       <PageHeader title="Checkout" text={`Signed in as ${user?.email}. Payment is processed securely by Paystack.`} />
       <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_400px]">
-        <Card className="p-5 sm:p-8">
+        <Card className="p-6 sm:p-8">
           <h2 className="text-xl">Delivery details</h2>
-          <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
             <Input label="Full name" autoComplete="name" {...f.bind('full_name')} />
             <Input label="Phone" type="tel" autoComplete="tel" {...f.bind('phone')} />
             <Input wrapClassName="sm:col-span-2" label="Delivery address" autoComplete="street-address" {...f.bind('address')} />
@@ -65,7 +65,7 @@ export default function CheckoutPage() {
           </div>
           <p className="mt-6 text-sm text-muted">{c.deliveryNote}</p>
         </Card>
-        <Card className="p-5 sm:p-7 lg:sticky lg:top-24">
+        <Card className="p-6 sm:p-8 lg:sticky lg:top-24">
           <h2 className="text-lg">Order summary</h2>
           <ul className="mt-4 divide-y divide-line">
             {cart.lines.map((l) => (
@@ -82,10 +82,10 @@ export default function CheckoutPage() {
           <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
             <div className="flex justify-between"><dt className="text-muted">Subtotal</dt><dd className="num">{money(cart.subtotal, c.currency)}</dd></div>
             <div className="flex justify-between"><dt className="text-muted">Delivery</dt><dd className="num">{delivery ? money(delivery, c.currency) : 'Free'}</dd></div>
-            <div className="flex justify-between border-t border-line pt-3 text-base font-bold"><dt>Total</dt><dd className="num">{money(cart.subtotal + delivery, c.currency)}</dd></div>
+            <div className="flex justify-between border-t border-line pt-3 text-base font-semibold"><dt>Total</dt><dd className="num">{money(cart.subtotal + delivery, c.currency)}</dd></div>
           </dl>
           <p className="mt-2 text-xs text-muted">Prices and stock are confirmed by our server before payment.</p>
-          <Button size="lg" className="mt-5 w-full" onClick={pay} loading={busy}>Pay {money(cart.subtotal + delivery, c.currency)}</Button>
+          <Button size="lg" className="mt-6 w-full" onClick={pay} loading={busy}>Pay {money(cart.subtotal + delivery, c.currency)}</Button>
         </Card>
       </div>
     </div>

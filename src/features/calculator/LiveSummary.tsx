@@ -30,9 +30,9 @@ function PriorityBar({ s }: { s: LoadSummary }) {
           <motion.div key={p.key} className={p.c} initial={false} animate={{ width: `${(p.v / total) * 100}%` }} transition={{ duration: 0.4 }} />
         ))}
       </div>
-      <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/70">
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/70">
         {parts.map((p) => (
-          <span key={p.key} className="flex items-center gap-1.5">
+          <span key={p.key} className="flex items-center gap-2">
             <span className={cn('size-2 rounded-full', p.c)} />
             {p.key} <span className="num text-white">{num(p.v, 2)} kW</span>
           </span>
@@ -51,44 +51,44 @@ export function LiveSummary({ summary, className }: { summary: LoadSummary; clas
         <span className="text-xs text-white/60">{summary.applianceCount} item{summary.applianceCount === 1 ? '' : 's'}</span>
       </div>
 
-      <div className="mt-5">
+      <div className="mt-6">
         <p className="text-sm text-white/65">Daily consumption</p>
-        <p className="mt-1 flex items-baseline gap-1.5">
-          <span className="text-5xl font-bold tracking-tight"><Counter value={summary.dailyEnergyKwh} /></span>
+        <p className="mt-1 flex items-baseline gap-2">
+          <span className="text-5xl font-semibold tracking-tight"><Counter value={summary.dailyEnergyKwh} /></span>
           <span className="text-lg text-white/70">kWh</span>
         </p>
       </div>
 
-      <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-white/10 pt-5">
+      <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 border-t border-white/10 pt-6">
         <div>
           <dt className="text-xs text-white/60">Connected load</dt>
-          <dd className="mt-0.5 text-lg font-medium"><Counter value={summary.connectedLoadKw} dp={2} /> kW</dd>
+          <dd className="mt-1 text-lg font-medium"><Counter value={summary.connectedLoadKw} dp={2} /> kW</dd>
         </div>
         <div>
           <dt className="text-xs text-white/60">Estimated peak</dt>
-          <dd className="mt-0.5 text-lg font-medium"><Counter value={summary.peakLoadKw} dp={2} /> kW</dd>
+          <dd className="mt-1 text-lg font-medium"><Counter value={summary.peakLoadKw} dp={2} /> kW</dd>
         </div>
         <div>
           <dt className="text-xs text-white/60">Peak with motor start</dt>
-          <dd className="mt-0.5 text-lg font-medium"><Counter value={summary.surgePeakKw} dp={2} /> kW</dd>
+          <dd className="mt-1 text-lg font-medium"><Counter value={summary.surgePeakKw} dp={2} /> kW</dd>
         </div>
         <div>
           <dt className="text-xs text-white/60">After sunset</dt>
-          <dd className="mt-0.5 text-lg font-medium"><Counter value={summary.nightEnergyKwh} /> kWh</dd>
+          <dd className="mt-1 text-lg font-medium"><Counter value={summary.nightEnergyKwh} /> kWh</dd>
         </div>
       </dl>
 
       {!empty && (
-        <div className="mt-6 border-t border-white/10 pt-5">
+        <div className="mt-6 border-t border-white/10 pt-6">
           <PriorityBar s={summary} />
         </div>
       )}
       {summary.highPowerLoads.length > 0 && (
-        <p className="mt-5 rounded-xl bg-white/[0.06] px-3.5 py-3 text-xs leading-relaxed text-white/75">
+        <p className="mt-6 rounded-xl bg-white/[0.06] px-4 py-3 text-xs leading-relaxed text-white/75">
           High-power load: {summary.highPowerLoads.join(', ')}. Running it in daytime keeps your battery smaller.
         </p>
       )}
-      <p className="mt-5 text-xs leading-relaxed text-white/50">
+      <p className="mt-6 text-xs leading-relaxed text-white/50">
         PV, inverter and battery sizing are worked out on our server when you finish.
       </p>
     </section>
@@ -102,7 +102,7 @@ export function MobileSummaryBar({ summary }: { summary: LoadSummary }) {
     <div className="fixed inset-x-0 bottom-0 z-30 lg:hidden">
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ type: 'spring', stiffness: 400, damping: 40 }} className="max-h-[70dvh] overflow-y-auto rounded-t-3xl">
+          <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }} transition={{ type: 'spring', stiffness: 400, damping: 40 }} className="max-h-[70dvh] overflow-y-auto rounded-t-2xl">
             <LiveSummary summary={summary} className="rounded-b-none pb-24" />
           </motion.div>
         )}
@@ -110,20 +110,20 @@ export function MobileSummaryBar({ summary }: { summary: LoadSummary }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="absolute inset-x-0 bottom-0 flex items-center gap-4 bg-primary-dark px-5 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-left text-white shadow-[0_-8px_24px_-12px_rgba(0,0,0,.4)]"
+        className="absolute inset-x-0 bottom-0 flex items-center gap-4 bg-primary-dark px-6 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-left text-white shadow-[0_-8px_24px_-12px_rgba(0,0,0,.4)]"
         aria-expanded={open}
       >
         <span className="flex-1">
-          <span className="block text-[0.7rem] text-white/60">Daily use</span>
-          <span className="num text-lg font-bold">{num(summary.dailyEnergyKwh)} kWh</span>
+          <span className="block text-xs text-white/60">Daily use</span>
+          <span className="num text-lg font-semibold">{num(summary.dailyEnergyKwh)} kWh</span>
         </span>
         <span className="flex-1">
-          <span className="block text-[0.7rem] text-white/60">Peak</span>
-          <span className="num text-lg font-bold">{num(summary.peakLoadKw, 2)} kW</span>
+          <span className="block text-xs text-white/60">Peak</span>
+          <span className="num text-lg font-semibold">{num(summary.peakLoadKw, 2)} kW</span>
         </span>
         <span className="flex-1">
-          <span className="block text-[0.7rem] text-white/60">Connected</span>
-          <span className="num text-lg font-bold">{num(summary.connectedLoadKw, 2)} kW</span>
+          <span className="block text-xs text-white/60">Connected</span>
+          <span className="num text-lg font-semibold">{num(summary.connectedLoadKw, 2)} kW</span>
         </span>
         <ChevronUp className={cn('size-5 shrink-0 text-accent transition-transform', open && 'rotate-180')} />
       </button>

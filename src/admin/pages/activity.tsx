@@ -50,9 +50,9 @@ export function Overview() {
       <h1 className="text-2xl sm:text-3xl">Overview</h1>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((c) => (
-          <Link key={c.label} to={c.to} className="rounded-[var(--radius-card)] border border-line bg-white p-5 hover:border-primary/40">
+          <Link key={c.label} to={c.to} className="rounded-[var(--radius-card)] border border-line bg-white p-6 hover:border-primary/40">
             <p className="text-sm text-muted">{c.label}</p>
-            <p className="num mt-2 text-2xl font-bold">{c.v}</p>
+            <p className="num mt-2 text-2xl font-semibold">{c.v}</p>
             <p className="mt-1 text-xs text-muted">{c.sub}</p>
           </Link>
         ))}
@@ -69,11 +69,11 @@ export function Overview() {
               </div>
             ))}
           </div>
-          <div className="mt-3 flex gap-4 text-xs text-muted"><span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-primary/25" />Calculated</span><span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-primary" />Paid</span></div>
+          <div className="mt-3 flex gap-4 text-xs text-muted"><span className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary/25" />Calculated</span><span className="flex items-center gap-2"><span className="size-2 rounded-full bg-primary" />Paid</span></div>
         </Card>
         <Card className="p-6">
           <h2 className="text-lg">Most common system sizes</h2>
-          <ul className="mt-5 space-y-3">
+          <ul className="mt-6 space-y-3">
             {s.top_system_sizes.length === 0 && <li className="text-sm text-muted">No data yet.</li>}
             {s.top_system_sizes.map((t) => (
               <li key={t.kva} className="flex items-center justify-between text-sm"><span className="num">{num(t.kva)} kVA</span><Badge tone="primary">{t.total}</Badge></li>
@@ -114,8 +114,8 @@ function AssessmentDetail({ row }: { row: Row }) {
           ['Location', [a.city, a.state, a.country].filter(Boolean).join(', ')], ['Grid', sentence(a.grid_availability)], ['Property', a.property_type ?? '—'],
           ['Daily energy', `${num(a.daily_energy_kwh)} kWh`], ['Peak / surge', `${num(a.peak_load_kw, 2)} / ${num(a.surge_peak_kw, 2)} kW`], ['System class', a.system_class ?? '—'],
           ['PV', res.data ? `${num(res.data.recommended_pv_kwp, 2)} kWp` : '—'], ['Inverter', res.data ? `${num(res.data.recommended_inverter_kw)} kW / ${num(res.data.recommended_inverter_kva)} kVA` : '—'], ['Battery', res.data ? `${num(res.data.recommended_battery_kwh, 2)} kWh` : '—'],
-        ].map(([k, v]) => <div key={k}><dt className="text-muted">{k}</dt><dd className="mt-0.5 font-medium">{v}</dd></div>)}
-        {a.is_diaspora && a.recipient && <div className="sm:col-span-3"><dt className="text-muted">Recipient</dt><dd className="mt-0.5 font-medium">{[a.recipient.name, a.recipient.phone, a.recipient.location, a.recipient.relationship].filter(Boolean).join(', ')}</dd></div>}
+        ].map(([k, v]) => <div key={k}><dt className="text-muted">{k}</dt><dd className="mt-1 font-medium">{v}</dd></div>)}
+        {a.is_diaspora && a.recipient && <div className="sm:col-span-3"><dt className="text-muted">Recipient</dt><dd className="mt-1 font-medium">{[a.recipient.name, a.recipient.phone, a.recipient.location, a.recipient.relationship].filter(Boolean).join(', ')}</dd></div>}
       </dl>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[520px] text-sm">
@@ -164,7 +164,7 @@ export function Payments() {
         { key: 'purpose', label: 'Type', render: (r) => sentence(r.purpose) },
         { key: 'amount', label: 'Amount', className: 'text-right num', render: (r) => money(r.amount, r.currency) },
         { key: 'channel', label: 'Channel', render: (r) => r.channel ?? '—' },
-        { key: 'status', label: 'Status', render: (r) => <span className="flex items-center gap-1.5"><StatusBadge status={r.status} />{r.is_duplicate && <Badge tone="danger">Duplicate</Badge>}</span> },
+        { key: 'status', label: 'Status', render: (r) => <span className="flex items-center gap-2"><StatusBadge status={r.status} />{r.is_duplicate && <Badge tone="danger">Duplicate</Badge>}</span> },
         { key: 'created_at', label: 'Date', render: (r) => date(r.created_at, true) },
       ],
     }} />
@@ -196,7 +196,7 @@ function OrderDetail({ row, done }: { row: Row; done: () => void }) {
         <div><dt className="text-muted">Total</dt><dd className="num font-medium">{money(o.total, o.currency)}</dd><dd className="text-muted">incl. delivery {money(o.delivery_fee, o.currency)}</dd></div>
       </dl>
       <ul className="divide-y divide-line rounded-xl border border-line text-sm">
-        {items.data?.map((i: Row) => <li key={i.id} className="flex justify-between gap-4 px-4 py-2.5"><span>{i.quantity} × {i.product_name} <span className="text-muted">{i.sku}</span></span><span className="num">{money(i.line_total, o.currency)}</span></li>)}
+        {items.data?.map((i: Row) => <li key={i.id} className="flex justify-between gap-4 px-4 py-3"><span>{i.quantity} × {i.product_name} <span className="text-muted">{i.sku}</span></span><span className="num">{money(i.line_total, o.currency)}</span></li>)}
       </ul>
       <div className="flex flex-wrap items-end gap-4">
         <Select wrapClassName="w-56" label="Status" value={status} options={ORDER_STATUSES.map((s) => ({ value: s, label: sentence(s) }))} onChange={(e) => setStatus(e.target.value as Order['status'])} />
@@ -273,7 +273,7 @@ function RequestDetail({ row, done }: { row: Row; done: () => void }) {
           {local.length === 0 && <p className="text-sm text-muted">No other verified installers.</p>}
           {local.map((i) => <Checkbox key={i.id} label={i.company_name} hint={`${i.city ? `${i.city}, ` : ''}${i.state}`} checked={picked.includes(i.id)} onChange={(v) => setPicked((p) => (v ? [...p, i.id] : p.filter((x) => x !== i.id)))} />)}
         </div>
-        <p className="mt-1.5 text-xs text-muted">Assigned installers receive the lead by email.</p>
+        <p className="mt-2 text-xs text-muted">Assigned installers receive the lead by email.</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-[14rem_1fr]">
         <Select label="Status" value={status} options={REQUEST_STATUSES.map((s) => ({ value: s, label: sentence(s) }))} onChange={(e) => setStatus(e.target.value as InstallerRequest['status'])} />
@@ -317,14 +317,14 @@ function EnquiryDetail({ row, done }: { row: Row; done: () => void }) {
     done();
   };
   return (
-    <div className="space-y-5 text-sm">
+    <div className="space-y-6 text-sm">
       <dl className="grid gap-4 sm:grid-cols-3">
         <div><dt className="text-muted">From</dt><dd className="font-medium">{e.full_name}</dd><dd><a className="text-primary" href={`mailto:${e.email}`}>{e.email}</a></dd><dd>{e.phone}</dd></div>
         <div><dt className="text-muted">Type</dt><dd className="font-medium">{sentence(e.type)}</dd></div>
         <div><dt className="text-muted">Company / location</dt><dd>{[e.company, e.location].filter(Boolean).join(', ') || '—'}</dd></div>
       </dl>
       {e.message && <p className="rounded-xl bg-surface p-4 whitespace-pre-line">{e.message}</p>}
-      {e.items?.length ? <ul className="list-disc pl-5">{e.items.map((i) => <li key={i.product_id}>{i.quantity} × {i.name}</li>)}</ul> : null}
+      {e.items?.length ? <ul className="list-disc pl-6">{e.items.map((i) => <li key={i.product_id}>{i.quantity} × {i.name}</li>)}</ul> : null}
       <div className="grid gap-4 sm:grid-cols-[14rem_1fr]">
         <Select label="Status" value={status} options={['new', 'in_progress', 'closed'].map((s) => ({ value: s, label: sentence(s) }))} onChange={(ev) => setStatus(ev.target.value as Enquiry['status'])} />
         <Textarea label="Internal notes" rows={3} value={notes} onChange={(ev) => setNotes(ev.target.value)} />

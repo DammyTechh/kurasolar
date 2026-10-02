@@ -28,7 +28,7 @@ export function CartDrawer() {
         <div className="space-y-3">
           <div className="flex items-baseline justify-between">
             <span className="text-muted">Subtotal</span>
-            <span className="num text-lg font-bold">{money(cart.subtotal, currency)}</span>
+            <span className="num text-lg font-semibold">{money(cart.subtotal, currency)}</span>
           </div>
           <p className="text-xs text-muted">Delivery is calculated at checkout.</p>
           <div className="grid grid-cols-2 gap-2">
@@ -54,7 +54,7 @@ export function CartDrawer() {
               </Link>
               <div className="flex min-w-0 flex-1 flex-col">
                 <p className="text-sm font-medium leading-snug">{l.name}</p>
-                <p className="num mt-0.5 text-sm text-muted">{money(l.price, currency)}</p>
+                <p className="num mt-1 text-sm text-muted">{money(l.price, currency)}</p>
                 <div className="mt-auto flex items-center justify-between pt-2">
                   <div className="flex items-center rounded-full border border-line">
                     <button type="button" className="grid size-8 place-items-center text-primary disabled:opacity-40" onClick={() => cart.setQuantity(l.product_id, l.quantity - 1)} disabled={l.quantity <= 1} aria-label="Decrease quantity"><Minus className="size-3.5" /></button>

@@ -1,0 +1,6 @@
+# The Vercel build only needs the frontend. Edge functions and the database
+# live in Supabase and are deployed with the Supabase CLI.
+supabase
+docs
+scripts
+HANDOVER.md

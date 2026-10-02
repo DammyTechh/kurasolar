@@ -48,14 +48,14 @@ export default function AdminApp() {
 
   const sidebar = (
     <nav className="flex h-full flex-col gap-6 overflow-y-auto px-4 py-6" aria-label="Admin">
-      <Link to="/admin" className="px-2"><img src="/logo-light.png" alt="KuraSolar" className="h-7 w-auto" /></Link>
+      <Link to="/admin" className="px-2"><img src="/logo-light.png" alt="KuraSolar" className="h-8 w-auto" /></Link>
       {GROUPS.map((g) => (
         <div key={g.title}>
           <p className="px-3 text-xs text-white/45">{g.title}</p>
-          <ul className="mt-1.5 space-y-0.5">
+          <ul className="mt-2 space-y-1">
             {g.links.map((l) => (
               <li key={l.to}>
-                <NavLink to={l.to} end={l.to === '/admin'} onClick={() => setOpen(false)} className={({ isActive }) => cn('flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors', isActive ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white')}>
+                <NavLink to={l.to} end={l.to === '/admin'} onClick={() => setOpen(false)} className={({ isActive }) => cn('flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors', isActive ? 'bg-white/10 text-white' : 'text-white/70 hover:text-white')}>
                   <l.icon className="size-4" />{l.label}
                 </NavLink>
               </li>
@@ -77,8 +77,8 @@ export default function AdminApp() {
   return (
     <div className="min-h-dvh bg-surface/70 lg:grid lg:grid-cols-[250px_minmax(0,1fr)]">
       <aside className="sticky top-0 hidden h-dvh bg-primary-dark lg:block">{sidebar}</aside>
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between bg-primary-dark px-4 lg:hidden">
-        <img src="/logo-light.png" alt="KuraSolar" className="h-7 w-auto" />
+      <header className="sticky top-0 z-40 flex h-12 items-center justify-between bg-primary-dark px-4 lg:hidden">
+        <img src="/logo-light.png" alt="KuraSolar" className="h-8 w-auto" />
         <button type="button" onClick={() => setOpen(true)} className="grid size-10 place-items-center text-white" aria-label="Menu"><Menu className="size-5" /></button>
       </header>
       {open && (
@@ -90,7 +90,7 @@ export default function AdminApp() {
           </div>
         </div>
       )}
-      <main className="min-w-0 px-4 py-6 sm:px-8 sm:py-10">
+      <main className="min-w-0 px-4 py-6 sm:px-8 sm:py-12">
         <Routes>
           <Route index element={<P.Overview />} />
           <Route path="assessments" element={<P.Assessments />} />

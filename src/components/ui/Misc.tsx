@@ -14,7 +14,7 @@ const tones: Record<Tone, string> = {
 };
 
 export function Badge({ tone = 'neutral', children, className }: { tone?: Tone; children: ReactNode; className?: string }) {
-  return <span className={cn('inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium', tones[tone], className)}>{children}</span>;
+  return <span className={cn('inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium', tones[tone], className)}>{children}</span>;
 }
 
 const STATUS_TONE: Record<string, Tone> = {
@@ -48,7 +48,7 @@ export function EmptyState({ icon, title, text, action }: { icon?: ReactNode; ti
     <div className="flex flex-col items-start gap-3 rounded-[var(--radius-card)] border border-dashed border-line bg-white p-8">
       {icon && <div className="grid size-11 place-items-center rounded-full bg-tint text-primary">{icon}</div>}
       <div>
-        <h3 className="text-base font-bold">{title}</h3>
+        <h3 className="text-base font-semibold">{title}</h3>
         {text && <p className="mt-1 max-w-md text-sm text-muted">{text}</p>}
       </div>
       {action}
@@ -63,7 +63,7 @@ export function Card({ className, children }: { className?: string; children: Re
 export function Logo({ light, className, to = '/' }: { light?: boolean; className?: string; to?: string }) {
   return (
     <Link to={to} className={cn('inline-flex shrink-0 items-center', className)} aria-label="KuraSolar home">
-      <img src={light ? '/logo-light.png' : '/logo.png'} alt="KuraSolar" width={960} height={266} className="h-8 w-auto sm:h-9" />
+      <img src={light ? '/logo-light.png' : '/logo.png'} alt="KuraSolar" width={960} height={266} className="h-8 w-auto sm:h-8" />
     </Link>
   );
 }
@@ -72,8 +72,8 @@ export function PageHeader({ title, text, actions, className }: { title: ReactNo
   return (
     <div className={cn('flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between', className)}>
       <div className="max-w-2xl">
-        <h1 className="text-[1.75rem] leading-tight sm:text-4xl">{title}</h1>
-        {text && <p className="mt-2 text-[1.0625rem] text-muted">{text}</p>}
+        <h1 className="text-3xl leading-tight sm:text-4xl">{title}</h1>
+        {text && <p className="mt-2 text-base text-muted">{text}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
     </div>
@@ -84,7 +84,7 @@ export function Stat({ label, value, sub, className }: { label: string; value: R
   return (
     <div className={cn('flex flex-col gap-1', className)}>
       <span className="text-sm text-muted">{label}</span>
-      <span className="num text-2xl font-bold text-ink">{value}</span>
+      <span className="num text-2xl font-semibold text-ink">{value}</span>
       {sub && <span className="text-xs text-muted">{sub}</span>}
     </div>
   );

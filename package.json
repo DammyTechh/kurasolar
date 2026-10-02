@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -10,7 +13,8 @@
     "typecheck": "tsc -b",
     "functions:check": "cd supabase/functions && deno check */index.ts",
     "db:push": "supabase db push",
-    "functions:deploy": "supabase functions deploy"
+    "functions:deploy": "supabase functions deploy",
+    "geo:seed": "node scripts/generate-geo-seed.js supabase/migrations/20261002100000_global_countries_regions.sql"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.1",

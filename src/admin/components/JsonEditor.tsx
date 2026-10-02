@@ -36,11 +36,11 @@ function SchemaField({ schema, value, onChange }: { schema: Schema; value: Json;
       return <div className="flex items-end pb-2"><Checkbox label={schema.label} hint={schema.hint} checked={Boolean(value)} onChange={onChange} /></div>;
     case 'color':
       return (
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <span className="text-sm font-medium">{schema.label}</span>
           <div className="flex items-center gap-2">
-            <input type="color" value={String(value ?? '#000000')} onChange={(e) => onChange(e.target.value.toUpperCase())} className="h-11 w-14 cursor-pointer rounded-lg border border-line bg-white p-1" aria-label={schema.label} />
-            <input className={cn(controlClass, 'h-11 font-mono uppercase')} value={String(value ?? '')} onChange={(e) => onChange(e.target.value)} maxLength={7} />
+            <input type="color" value={String(value ?? '#000000')} onChange={(e) => onChange(e.target.value.toUpperCase())} className="h-10 w-14 cursor-pointer rounded-lg border border-line bg-white p-1" aria-label={schema.label} />
+            <input className={cn(controlClass, 'h-10 font-mono uppercase')} value={String(value ?? '')} onChange={(e) => onChange(e.target.value)} maxLength={7} />
           </div>
         </div>
       );
@@ -63,7 +63,7 @@ function SchemaField({ schema, value, onChange }: { schema: Schema; value: Json;
       return (
         <div className="sm:col-span-2">
           <p className="text-sm font-medium">{schema.label}</p>
-          {schema.hint && <p className="mt-0.5 text-sm text-muted">{schema.hint}</p>}
+          {schema.hint && <p className="mt-1 text-sm text-muted">{schema.hint}</p>}
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             {entries.map(([k, v], i) => (
               <div key={i} className="grid grid-cols-[1fr_1fr_auto] gap-2">
@@ -84,7 +84,7 @@ function SchemaField({ schema, value, onChange }: { schema: Schema; value: Json;
       return (
         <div className="sm:col-span-2">
           {schema.label && <p className="text-sm font-medium">{schema.label}</p>}
-          {schema.hint && <p className="mt-0.5 text-sm text-muted">{schema.hint}</p>}
+          {schema.hint && <p className="mt-1 text-sm text-muted">{schema.hint}</p>}
           <div className={cn('grid gap-4 sm:grid-cols-2', schema.label && 'mt-3 rounded-2xl bg-surface p-4')}>
             {Object.entries(schema.fields).map(([k, s]) => <SchemaField key={k} schema={s} value={obj[k]} onChange={(v) => onChange({ ...obj, [k]: v })} />)}
           </div>
@@ -97,7 +97,7 @@ function SchemaField({ schema, value, onChange }: { schema: Schema; value: Json;
       return (
         <div className="sm:col-span-2">
           <p className="text-sm font-medium">{schema.label}</p>
-          {schema.hint && <p className="mt-0.5 text-sm text-muted">{schema.hint}</p>}
+          {schema.hint && <p className="mt-1 text-sm text-muted">{schema.hint}</p>}
           <div className="mt-3 space-y-3">
             {list.map((item, i) => (
               <div key={i} className="rounded-2xl border border-line p-4">
@@ -151,7 +151,7 @@ export function JsonDocEditor({ table, docKey, title, description, schema }: { t
 
   if (q.isLoading) return <Spinner />;
   return (
-    <Card className="p-5 sm:p-7">
+    <Card className="p-6 sm:p-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h2 className="text-lg">{title}</h2>
@@ -159,7 +159,7 @@ export function JsonDocEditor({ table, docKey, title, description, schema }: { t
         </div>
         <Button onClick={save} loading={busy}>Save</Button>
       </div>
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
+      <div className="mt-6 grid gap-6 sm:grid-cols-2">
         {Object.entries(schema).map(([k, s]) => <SchemaField key={k} schema={s} value={value[k]} onChange={(v) => setValue((x) => ({ ...x, [k]: v }))} />)}
       </div>
     </Card>

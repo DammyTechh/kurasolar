@@ -15,7 +15,7 @@ import { useDraft } from '@/features/calculator/useDraft';
 import { errorMessage, invoke } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { num, sentence } from '@/lib/format';
-import { useApplianceCatalog, useCountries, useRegions } from '@/lib/queries';
+import { useApplianceCatalog, usePrimaryMarkets, useRegions } from '@/lib/queries';
 import { useSeo } from '@/lib/seo';
 import { supabase } from '@/lib/supabase';
 import type { CalculateResponse } from '@/lib/types';
@@ -49,7 +49,7 @@ export default function CalculatorPage() {
       <div className="container-page pt-8 sm:pt-12">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-[1.75rem] leading-tight sm:text-4xl">Size your solar system</h1>
+            <h1 className="text-3xl leading-tight sm:text-4xl">Size your solar system</h1>
             <p className="mt-2 max-w-xl text-muted">Add what you want to power. Your load updates as you go; your draft is saved on this device.</p>
           </div>
           {(draft.appliances.length > 0 || draft.step > 0) && (
@@ -116,17 +116,23 @@ type DraftApi = ReturnType<typeof useDraft>;
 
 function LocationStep({ draft, setLocation, backupDefaults, onNext }: { draft: DraftApi['draft']; setLocation: DraftApi['setLocation']; backupDefaults: Record<string, number>; onNext: () => void }) {
   const loc = draft.location;
-  const { data: countries = [] } = useCountries();
+  const { data: countries = [], primary, rest } = usePrimaryMarkets();
   const known = countries.find((c) => c.name === loc.country);
-  const { data: regions = [] } = useRegions(known?.code);
+  const { data: regions = [], isLoading: regionsLoading } = useRegions(known?.code);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const isOther = !known && loc.country !== '' && countries.length > 0;
   const defaultBackup = backupDefaults[loc.gridAvailability] ?? 10;
+  const countryGroups = countries.length
+    ? [
+        { label: 'Where we work most', options: primary.map((c) => c.name) },
+        { label: 'Everywhere else', options: rest.map((c) => c.name) },
+      ]
+    : [{ label: 'Countries', options: [loc.country || 'Nigeria'] }];
 
   const next = () => {
     const e: Record<string, string> = {};
     if (!loc.country.trim()) e.country = 'Choose a country.';
     if (regions.length > 0 && !loc.state) e.state = 'Choose a state or region. Sun hours vary by region.';
+    if (regions.length === 0 && !loc.state.trim()) e.state = 'Enter the state or region.';
     if (loc.isDiaspora && !loc.recipient.name.trim()) e.recipientName = 'Enter the recipient’s name.';
     if (loc.isDiaspora && !loc.recipient.phone.trim()) e.recipientPhone = 'Enter the recipient’s phone number.';
     setErrors(e);
@@ -134,33 +140,48 @@ function LocationStep({ draft, setLocation, backupDefaults, onNext }: { draft: D
   };
 
   return (
-    <Card className="p-5 sm:p-8">
+    <Card className="p-6 sm:p-8">
       <h2 className="text-xl">Where will the system be installed?</h2>
-      <p className="mt-1 text-sm text-muted">We use regional sun hours and temperatures, so a Kano roof is sized differently from one in Port Harcourt.</p>
+      <p className="mt-1 text-sm text-muted">We size against the sun hours and temperature where the system will stand, so a Kano roof is sized differently from one in Port Harcourt.</p>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2">
+      <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <Select
           label="Country"
-          value={isOther ? '__other' : loc.country}
-          options={[...(countries.length ? countries : [{ name: loc.country || 'Nigeria' }]).map((c) => ({ value: c.name, label: c.name })), { value: '__other', label: 'Other African country' }]}
-          onChange={(e) => setLocation({ country: e.target.value === '__other' ? 'Other' : e.target.value, state: '' })}
+          placeholder="Select a country"
+          value={loc.country}
+          groups={countryGroups}
+          onChange={(e) => setLocation({ country: e.target.value, state: '' })}
           error={errors.country}
         />
-        {isOther ? (
-          <Input label="Country name" value={loc.country === 'Other' ? '' : loc.country} onChange={(e) => setLocation({ country: e.target.value || 'Other' })} maxLength={80} />
+        {regionsLoading ? (
+          <Select label="State / region" placeholder="Loading…" value="" options={[]} disabled />
         ) : regions.length > 0 ? (
-          <Select label="State / region" placeholder="Select" value={loc.state} options={regions.map((r) => r.name)} onChange={(e) => setLocation({ state: e.target.value })} error={errors.state} />
+          <Select
+            label="State / region"
+            placeholder="Select"
+            value={loc.state}
+            options={regions.map((r) => r.name)}
+            onChange={(e) => setLocation({ state: e.target.value })}
+            error={errors.state}
+          />
         ) : (
-          <Input label="State / region" value={loc.state} onChange={(e) => setLocation({ state: e.target.value })} maxLength={80} />
+          <Input
+            label="State / region"
+            hint={known ? 'We have no region list for this country yet, so we use its national average sun hours.' : undefined}
+            value={loc.state}
+            onChange={(e) => setLocation({ state: e.target.value })}
+            error={errors.state}
+            maxLength={80}
+          />
         )}
         <Input label="City or town" value={loc.city} onChange={(e) => setLocation({ city: e.target.value })} maxLength={80} />
         <Input label="Postcode" optional value={loc.postcode} onChange={(e) => setLocation({ postcode: e.target.value })} maxLength={20} />
         <Select wrapClassName="sm:col-span-2" label="Property type" value={loc.propertyType} options={PROPERTY_TYPES} onChange={(e) => setLocation({ propertyType: e.target.value })} />
       </div>
 
-      <Segmented className="mt-7" label="How reliable is grid power there?" value={loc.gridAvailability} onChange={(gridAvailability) => setLocation({ gridAvailability })} options={GRID_OPTIONS} />
+      <Segmented className="mt-8" label="How reliable is grid power there?" value={loc.gridAvailability} onChange={(gridAvailability) => setLocation({ gridAvailability })} options={GRID_OPTIONS} />
 
-      <div className="mt-6 rounded-2xl bg-surface p-4 sm:p-5">
+      <div className="mt-6 rounded-2xl bg-surface p-4 sm:p-6">
         <Checkbox
           label="Set my own backup time"
           hint={`Otherwise we plan for ${defaultBackup} hours of battery backup, based on the grid condition.`}
@@ -174,13 +195,13 @@ function LocationStep({ draft, setLocation, backupDefaults, onNext }: { draft: D
 
       <div className="mt-6 border-t border-line pt-6">
         <Checkbox
-          label="I am designing this system for someone in Africa"
+          label="I am designing this system for someone in another country"
           hint="For parents, a family home, a new build or a project back home."
           checked={loc.isDiaspora}
           onChange={(isDiaspora) => setLocation({ isDiaspora })}
         />
         {loc.isDiaspora && (
-          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
             <Input label="Recipient’s name" value={loc.recipient.name} onChange={(e) => setLocation({ recipient: { ...loc.recipient, name: e.target.value } })} error={errors.recipientName} maxLength={120} />
             <Input label="Recipient’s phone" type="tel" value={loc.recipient.phone} onChange={(e) => setLocation({ recipient: { ...loc.recipient, phone: e.target.value } })} error={errors.recipientPhone} maxLength={32} />
             <Input label="Property address" value={loc.recipient.location} onChange={(e) => setLocation({ recipient: { ...loc.recipient, location: e.target.value } })} maxLength={200} />
@@ -231,7 +252,7 @@ function AppliancesStep({ appliances, setAppliances, onBack, onNext }: { applian
 
   return (
     <div className="space-y-6">
-      <Card className="p-5 sm:p-8">
+      <Card className="p-6 sm:p-8">
         <h2 className="text-xl">What do you want to power?</h2>
         <p className="mt-1 text-sm text-muted">Choose a type to add it with sensible defaults you can adjust.</p>
         <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3">
@@ -246,8 +267,8 @@ function AppliancesStep({ appliances, setAppliances, onBack, onNext }: { applian
                 className="relative flex flex-col items-start gap-3 rounded-2xl border border-line bg-white p-3 text-left transition-colors hover:border-primary/50 hover:bg-tint sm:p-4"
               >
                 <meta.icon className="size-6 text-primary" aria-hidden />
-                <span className="text-[0.8rem] leading-tight font-medium sm:text-sm">{meta.label}</span>
-                {count ? <span className="num absolute top-2.5 right-2.5 grid min-w-6 place-items-center rounded-full bg-accent px-1.5 text-xs font-bold text-primary-dark">{count}</span> : null}
+                <span className="text-xs leading-tight font-medium sm:text-sm">{meta.label}</span>
+                {count ? <span className="num absolute top-2.5 right-2.5 grid min-w-6 place-items-center rounded-full bg-accent px-2 text-xs font-semibold text-primary-dark">{count}</span> : null}
               </button>
             );
           })}
@@ -258,12 +279,12 @@ function AppliancesStep({ appliances, setAppliances, onBack, onNext }: { applian
             <h3 className="text-sm font-medium text-ink">Quick add</h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {presets.map((row) => (
-                <button key={row.id} type="button" onClick={() => quickAdd(fromCatalog(row))} className="flex items-center gap-1.5 rounded-full border border-line bg-white py-1.5 pr-3.5 pl-2.5 text-sm text-ink/85 hover:border-primary/50 hover:text-primary">
+                <button key={row.id} type="button" onClick={() => quickAdd(fromCatalog(row))} className="flex items-center gap-2 rounded-full border border-line bg-white py-2 pr-4 pl-3 text-sm text-ink/85 hover:border-primary/50 hover:text-primary">
                   <Plus className="size-3.5 text-primary" /> {row.name}
                 </button>
               ))}
               {catalog.length > 10 && (
-                <button type="button" onClick={() => setShowAllPresets((v) => !v)} className="rounded-full px-3 py-1.5 text-sm font-medium text-primary">
+                <button type="button" onClick={() => setShowAllPresets((v) => !v)} className="rounded-full px-3 py-2 text-sm font-medium text-primary">
                   {showAllPresets ? 'Show fewer' : `Show all ${catalog.length}`}
                 </button>
               )}
@@ -272,7 +293,7 @@ function AppliancesStep({ appliances, setAppliances, onBack, onNext }: { applian
         )}
       </Card>
 
-      <Card className="p-5 sm:p-8">
+      <Card className="p-6 sm:p-8">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="text-xl">Your appliances</h2>
           <span className="text-sm text-muted">{appliances.length} line{appliances.length === 1 ? '' : 's'}</span>
@@ -280,7 +301,7 @@ function AppliancesStep({ appliances, setAppliances, onBack, onNext }: { applian
         {grouped.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-dashed border-line p-6 text-sm text-muted">Nothing added yet. Start with lights and sockets, then add your larger appliances.</p>
         ) : (
-          <div className="mt-5 space-y-6">
+          <div className="mt-6 space-y-6">
             {grouped.map(({ c, items }) => (
               <div key={c}>
                 <h3 className="text-sm text-muted">{CATEGORIES[c].plural}</h3>
@@ -311,7 +332,7 @@ function AppliancesStep({ appliances, setAppliances, onBack, onNext }: { applian
 function ApplianceRow({ a, onEdit, onDuplicate, onRemove, onQty }: { a: ApplianceInput; onEdit: () => void; onDuplicate: () => void; onRemove: () => void; onQty: (q: number) => void }) {
   const kwh = applianceDailyKwh(a);
   return (
-    <li className="flex flex-wrap items-center gap-x-4 gap-y-3 p-3.5 sm:flex-nowrap sm:p-4">
+    <li className="flex flex-wrap items-center gap-x-4 gap-y-3 p-4 sm:flex-nowrap sm:p-4">
       <button type="button" onClick={onEdit} className="min-w-0 flex-1 text-left">
         <p className="truncate font-medium text-ink">{a.name}</p>
         <p className="truncate text-sm text-muted">{describe(a)}</p>
@@ -336,7 +357,7 @@ function ApplianceRow({ a, onEdit, onDuplicate, onRemove, onQty }: { a: Applianc
 function PrioritiesStep({ appliances, setAppliances, onBack, onNext }: { appliances: ApplianceInput[]; setAppliances: DraftApi['setAppliances']; onBack: () => void; onNext: () => void }) {
   const set = (id: string | undefined, patch: Partial<ApplianceInput>) => setAppliances((list) => list.map((x) => (x.id === id ? { ...x, ...patch } : x)));
   return (
-    <Card className="p-5 sm:p-8">
+    <Card className="p-6 sm:p-8">
       <h2 className="text-xl">Which loads matter most?</h2>
       <p className="mt-1 max-w-2xl text-sm text-muted">
         Essential loads get the most battery. Heavy loads such as water heaters and irons are best run in sunshine. We use this to size the economy, standard and extended battery options.
@@ -345,7 +366,7 @@ function PrioritiesStep({ appliances, setAppliances, onBack, onNext }: { applian
         {appliances.map((a) => {
           const Icon = CATEGORIES[a.category].icon;
           return (
-            <li key={a.id} className="grid gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto_10rem] md:items-center md:gap-5">
+            <li key={a.id} className="grid gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto_10rem] md:items-center md:gap-6">
               <div className="flex min-w-0 items-center gap-3">
                 <span className="grid size-9 shrink-0 place-items-center rounded-full bg-tint text-primary"><Icon className="size-4" /></span>
                 <div className="min-w-0">
@@ -361,7 +382,7 @@ function PrioritiesStep({ appliances, setAppliances, onBack, onNext }: { applian
                     role="radio"
                     aria-checked={a.priority === p.value}
                     onClick={() => set(a.id, { priority: p.value })}
-                    className={cn('rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors sm:text-sm', a.priority === p.value ? 'bg-white text-primary shadow-sm' : 'text-muted hover:text-ink')}
+                    className={cn('rounded-full px-3 py-2 text-xs font-medium whitespace-nowrap transition-colors sm:text-sm', a.priority === p.value ? 'bg-white text-primary shadow-sm' : 'text-muted hover:text-ink')}
                   >
                     {p.value === 'heavy' ? 'Heavy' : p.label}
                   </button>
@@ -420,13 +441,13 @@ function ReviewStep({ draft, onBack, onCalculated }: { draft: DraftApi['draft'];
 
   return (
     <div className="space-y-6">
-      <Card className="p-5 sm:p-8">
+      <Card className="p-6 sm:p-8">
         <h2 className="text-xl">Review</h2>
-        <dl className="mt-5 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-3">
-          <div><dt className="text-muted">Location</dt><dd className="mt-0.5 font-medium">{[loc.city, loc.state, loc.country].filter(Boolean).join(', ')}</dd></div>
-          <div><dt className="text-muted">Grid</dt><dd className="mt-0.5 font-medium">{sentence(loc.gridAvailability)}</dd></div>
-          <div><dt className="text-muted">Backup</dt><dd className="mt-0.5 font-medium">{loc.backupHours ? `${loc.backupHours} hours` : 'Standard for grid'}</dd></div>
-          {loc.isDiaspora && <div className="sm:col-span-3"><dt className="text-muted">Designed for</dt><dd className="mt-0.5 font-medium">{loc.recipient.name} {loc.recipient.relationship && `(${loc.recipient.relationship.toLowerCase()})`}</dd></div>}
+        <dl className="mt-6 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-3">
+          <div><dt className="text-muted">Location</dt><dd className="mt-1 font-medium">{[loc.city, loc.state, loc.country].filter(Boolean).join(', ')}</dd></div>
+          <div><dt className="text-muted">Grid</dt><dd className="mt-1 font-medium">{sentence(loc.gridAvailability)}</dd></div>
+          <div><dt className="text-muted">Backup</dt><dd className="mt-1 font-medium">{loc.backupHours ? `${loc.backupHours} hours` : 'Standard for grid'}</dd></div>
+          {loc.isDiaspora && <div className="sm:col-span-3"><dt className="text-muted">Designed for</dt><dd className="mt-1 font-medium">{loc.recipient.name} {loc.recipient.relationship && `(${loc.recipient.relationship.toLowerCase()})`}</dd></div>}
         </dl>
         <div className="mt-6 overflow-x-auto">
           <table className="w-full min-w-[480px] text-sm">
@@ -442,11 +463,11 @@ function ReviewStep({ draft, onBack, onCalculated }: { draft: DraftApi['draft'];
             <tbody>
               {draft.appliances.map((a) => (
                 <tr key={a.id} className="border-b border-line/70">
-                  <td className="py-2.5 pr-3">{a.name}</td>
-                  <td className="num py-2.5 pr-3 text-right">{a.quantity}</td>
-                  <td className="num py-2.5 pr-3 text-right">{a.ratedWatts}</td>
-                  <td className="num py-2.5 pr-3 text-right">{a.hoursPerDay}</td>
-                  <td className="py-2.5">{sentence(a.priority)}</td>
+                  <td className="py-3 pr-3">{a.name}</td>
+                  <td className="num py-3 pr-3 text-right">{a.quantity}</td>
+                  <td className="num py-3 pr-3 text-right">{a.ratedWatts}</td>
+                  <td className="num py-3 pr-3 text-right">{a.hoursPerDay}</td>
+                  <td className="py-3">{sentence(a.priority)}</td>
                 </tr>
               ))}
             </tbody>
@@ -459,7 +480,7 @@ function ReviewStep({ draft, onBack, onCalculated }: { draft: DraftApi['draft'];
         )}
       </Card>
 
-      <Card className="p-5 sm:p-8">
+      <Card className="p-6 sm:p-8">
         {user ? (
           <>
             <h2 className="text-xl">Ready to calculate</h2>

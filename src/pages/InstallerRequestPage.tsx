@@ -55,14 +55,14 @@ export default function InstallerRequestPage() {
 
   const today = new Date().toISOString().slice(0, 10);
   return (
-    <div className="container-page py-10 sm:py-14">
+    <div className="container-page py-12 sm:py-16">
       <PageHeader title="Request an installer" text="One request, up to three verified installers who cover your state and system type." />
       {a?.assessment && (
         <p className="mt-6 max-w-2xl rounded-xl bg-tint px-4 py-3 text-sm">
           Linked to assessment <span className="num font-medium">{a.assessment.code}</span> ({a.assessment.system_class}). Installers will see your system size.
         </p>
       )}
-      <Card className="mt-8 grid max-w-3xl gap-5 p-5 sm:grid-cols-2 sm:p-8">
+      <Card className="mt-8 grid max-w-3xl gap-6 p-6 sm:grid-cols-2 sm:p-8">
         <Input label="Full name" autoComplete="name" {...f.bind('full_name')} />
         <Input label="Phone" type="tel" autoComplete="tel" {...f.bind('phone')} />
         <Input wrapClassName="sm:col-span-2" label="Email" type="email" autoComplete="email" {...f.bind('email')} />

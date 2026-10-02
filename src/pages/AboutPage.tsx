@@ -9,9 +9,9 @@ export default function AboutPage() {
   const a = content.about;
   useSeo({ title: a?.title ?? 'About us', description: a?.body?.slice(0, 155) });
   return (
-    <div className="container-page grid gap-10 py-10 sm:py-16 lg:grid-cols-[1fr_0.9fr]">
+    <div className="container-page grid gap-12 py-12 sm:py-16 lg:grid-cols-[1fr_0.9fr]">
       <div>
-        <h1 className="text-[2rem] leading-tight sm:text-5xl">{a?.title ?? 'About us'}</h1>
+        <h1 className="text-3xl leading-tight sm:text-5xl">{a?.title ?? 'About us'}</h1>
         <div className="prose-ks mt-8"><ReactMarkdown>{a?.body ?? ''}</ReactMarkdown></div>
         <div className="mt-8 flex flex-wrap gap-3"><ButtonLink to="/solar-calculator">Try the calculator</ButtonLink><ButtonLink to="/contact" variant="secondary">Contact us</ButtonLink></div>
       </div>

@@ -36,10 +36,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="grid min-h-dvh place-items-center bg-primary-dark px-5 py-12">
+    <div className="grid min-h-dvh place-items-center bg-primary-dark px-6 py-12">
       <div className="w-full max-w-sm">
-        <div className="mb-8 flex justify-center"><img src="/logo-light.png" alt="KuraSolar" className="h-9 w-auto" /></div>
-        <form onSubmit={submit} className="rounded-3xl bg-white p-7 shadow-2xl">
+        <div className="mb-8 flex justify-center"><img src="/logo-light.png" alt="KuraSolar" className="h-8 w-auto" /></div>
+        <form onSubmit={submit} className="rounded-2xl bg-white p-8 shadow-2xl">
           <div className="flex items-center gap-2 text-sm text-muted"><Lock className="size-4" />Administrator</div>
           <h1 className="mt-2 text-2xl">Sign in</h1>
           <div className="mt-6 space-y-4">

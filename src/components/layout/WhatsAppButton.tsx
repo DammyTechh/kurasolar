@@ -27,7 +27,7 @@ export function WhatsAppButton() {
       href={whatsappLink(wa.number, contextual ?? wa.defaultMessage)}
       target="_blank"
       rel="noopener noreferrer"
-      className="group fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex items-center gap-2 rounded-full bg-[#1FAF55] p-3 text-white shadow-lift transition-transform hover:-translate-y-0.5 sm:right-6 sm:bottom-6 sm:pr-5"
+      className="group fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex items-center gap-2 rounded-full bg-[#1FAF55] p-3 text-white shadow-lift transition-transform hover:-translate-y-0.5 sm:right-6 sm:bottom-6 sm:pr-6"
       aria-label={label}
     >
       <WhatsAppGlyph className="size-6" />

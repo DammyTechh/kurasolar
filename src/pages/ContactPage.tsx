@@ -48,18 +48,18 @@ export default function ContactPage() {
   if (done) return <SuccessCard title="Message sent" text="Thanks. An engineer will reply within one working day."><ButtonLink to="/" variant="secondary">Back home</ButtonLink></SuccessCard>;
 
   return (
-    <div className="container-page grid gap-10 py-10 sm:py-16 lg:grid-cols-[0.8fr_1.2fr]">
+    <div className="container-page grid gap-12 py-12 sm:py-16 lg:grid-cols-[0.8fr_1.2fr]">
       <div>
-        <h1 className="text-[2rem] leading-tight sm:text-5xl">{cc?.title ?? 'Contact us'}</h1>
-        <p className="mt-4 max-w-md text-[1.0625rem] text-muted">{cc?.text}</p>
-        <ul className="mt-8 space-y-4 text-[0.95rem]">
+        <h1 className="text-3xl leading-tight sm:text-5xl">{cc?.title ?? 'Contact us'}</h1>
+        <p className="mt-4 max-w-md text-base text-muted">{cc?.text}</p>
+        <ul className="mt-8 space-y-4 text-sm">
           <li className="flex gap-3"><Phone className="size-5 text-accent" /><a href={`tel:${c.phone.replace(/\s/g, '')}`} className="hover:text-primary">{c.phone}</a></li>
           <li className="flex gap-3"><Mail className="size-5 text-accent" /><a href={`mailto:${c.email}`} className="hover:text-primary">{c.email}</a></li>
           <li className="flex gap-3"><MapPin className="size-5 text-accent" />{c.address}</li>
           {cc?.hours && <li className="flex gap-3"><Clock className="size-5 text-accent" />{cc.hours}</li>}
         </ul>
       </div>
-      <Card className="grid gap-5 p-5 sm:grid-cols-2 sm:p-8">
+      <Card className="grid gap-6 p-6 sm:grid-cols-2 sm:p-8">
         <Select wrapClassName="sm:col-span-2" label="What is it about?" options={TYPES} {...f.bind('type')} />
         <Input label="Full name" autoComplete="name" {...f.bind('full_name')} />
         <Input label="Email" type="email" autoComplete="email" {...f.bind('email')} />

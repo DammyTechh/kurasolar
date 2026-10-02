@@ -47,9 +47,9 @@ export default function InstallerJoinPage() {
   if (done) return <SuccessCard title="Application received" text="Our team reviews every installer before listing. We’ll email you once your profile is verified, usually within five working days."><ButtonLink to="/" variant="secondary">Back home</ButtonLink></SuccessCard>;
 
   return (
-    <div className="container-page py-10 sm:py-14">
+    <div className="container-page py-12 sm:py-16">
       <PageHeader title="Join the installer network" text="Receive requests from customers who already know the system they need, with the load assessment attached." />
-      <Card className="mt-8 grid max-w-3xl gap-5 p-5 sm:grid-cols-2 sm:p-8">
+      <Card className="mt-8 grid max-w-3xl gap-6 p-6 sm:grid-cols-2 sm:p-8">
         <Input label="Company name" {...f.bind('company_name')} />
         <Input label="Contact person" {...f.bind('contact_person')} />
         <Input label="Email" type="email" {...f.bind('email')} />
@@ -70,7 +70,7 @@ export default function InstallerJoinPage() {
         </fieldset>
         <fieldset className="sm:col-span-2">
           <legend className="text-sm font-medium">Other states you cover</legend>
-          <div className="mt-3 grid max-h-56 grid-cols-2 gap-2.5 overflow-y-auto rounded-xl border border-line p-3 sm:grid-cols-3">
+          <div className="mt-3 grid max-h-56 grid-cols-2 gap-3 overflow-y-auto rounded-xl border border-line p-3 sm:grid-cols-3">
             {states.filter((s) => s !== f.values.state).map((s) => <Checkbox key={s} label={s} checked={f.values.states_covered.includes(s)} onChange={() => toggle('states_covered', s)} />)}
           </div>
         </fieldset>

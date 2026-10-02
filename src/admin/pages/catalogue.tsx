@@ -185,11 +185,11 @@ export function Appliances() {
 }
 
 export function Regions() {
-  const countries = useQuery({ queryKey: ['admin', 'countries', 'options'], queryFn: async () => ((await supabase.from('countries').select('code, name').order('sort_order')).data ?? []).map((c) => ({ value: c.code as string, label: c.name as string })) }).data ?? [];
+  const countries = useQuery({ queryKey: ['admin', 'countries', 'options'], queryFn: async () => ((await supabase.from('countries').select('code, name').order('sort_order').order('name').limit(500)).data ?? []).map((c) => ({ value: c.code as string, label: c.name as string })) }).data ?? [];
   return (
     <div className="space-y-12">
       <Resource config={{
-        table: 'regions', title: 'Regions and sun hours', description: 'Peak sun hours (kWh/m²/day) and mean ambient temperature per state drive PV sizing and temperature losses.', order: { column: 'name' }, search: ['name', 'zone'], pageSize: 50,
+        table: 'regions', title: 'Regions and sun hours', description: 'Peak sun hours (kWh/m²/day) and mean ambient temperature per state drive PV sizing and temperature losses. Values outside Nigeria are modelled from latitude and climate belt — refine them as you enter a market.', order: { column: 'name' }, search: ['name', 'zone'], pageSize: 50,
         filters: [{ key: 'country_code', label: 'Country', options: countries }],
         defaults: { country_code: 'NG', is_active: true },
         columns: [
@@ -204,7 +204,7 @@ export function Regions() {
         ],
       }} />
       <Resource config={{
-        table: 'countries', title: 'Countries', idKey: 'code', description: 'Defaults used when a region is not listed. The currency sets the assessment’s default payment currency.', order: { column: 'sort_order' },
+        table: 'countries', title: 'Countries', idKey: 'code', description: 'Defaults used when a region is not listed. The currency sets the assessment’s default payment currency. Sort order below 100 puts a country in the “Where we work most” group at the top of the picker.', order: { column: 'name' }, search: ['name', 'code', 'currency'], pageSize: 50,
         canDelete: false,
         columns: [
           { key: 'name', label: 'Country' }, { key: 'code', label: 'Code' }, { key: 'currency', label: 'Currency' },

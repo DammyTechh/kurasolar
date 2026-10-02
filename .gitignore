@@ -7,3 +7,5 @@ supabase/.branches
 supabase/functions/.env
 *.log
 .DS_Store
+tsconfig.tsbuildinfo
+.vercel

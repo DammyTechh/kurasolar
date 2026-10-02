@@ -7,7 +7,7 @@ import { Checkbox, Input, Select } from '@/components/ui/Field';
 import { Card } from '@/components/ui/Misc';
 import { PROPERTY_TYPES } from '@/features/calculator/config';
 import { errorMessage } from '@/lib/api';
-import { useCountries, useRegions } from '@/lib/queries';
+import { usePrimaryMarkets, useRegions } from '@/lib/queries';
 import { useSeo } from '@/lib/seo';
 import { supabase } from '@/lib/supabase';
 import { useForm } from '@/lib/useForm';
@@ -20,7 +20,7 @@ import { safeNext } from './SignInPage';
 export function ProfileForm({ submitLabel, onSaved, onboarding }: { submitLabel: string; onSaved?: () => void; onboarding?: boolean }) {
   const { user, profile, refreshProfile } = useAuth();
   const toast = useToast();
-  const { data: countries = [] } = useCountries();
+  const { data: countries = [], primary, rest } = usePrimaryMarkets();
   const f = useForm({
     full_name: profile?.full_name ?? '', phone: profile?.phone ?? '', country: profile?.country ?? 'Nigeria',
     state: profile?.state ?? '', city: profile?.city ?? '', address: profile?.address ?? '',
@@ -62,7 +62,7 @@ export function ProfileForm({ submitLabel, onSaved, onboarding }: { submitLabel:
   };
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2">
+    <div className="grid gap-6 sm:grid-cols-2">
       <div className="flex items-center gap-4 sm:col-span-2">
         <Avatar name={f.values.full_name || user?.email} url={f.values.avatar_url} size={64} />
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-primary ring-1 ring-line hover:bg-tint">
@@ -73,7 +73,7 @@ export function ProfileForm({ submitLabel, onSaved, onboarding }: { submitLabel:
       <Input label="Full name" autoComplete="name" {...f.bind('full_name')} />
       <Input label="Phone" type="tel" autoComplete="tel" {...f.bind('phone')} />
       <Input wrapClassName="sm:col-span-2" label="Email" value={user?.email ?? ''} disabled hint="Your sign-in email. Contact us to change it." />
-      <Select label="Country" options={countries.map((c) => c.name)} {...f.bind('country')} onChange={(e) => { f.set('country', e.target.value); f.set('state', ''); }} />
+      <Select label="Country" groups={[{ label: 'Where we work most', options: primary.map((c) => c.name) }, { label: 'Everywhere else', options: rest.map((c) => c.name) }]} {...f.bind('country')} onChange={(e) => { f.set('country', e.target.value); f.set('state', ''); }} />
       {regions.length ? <Select label="State / region" placeholder="Select" options={regions.map((r) => r.name)} {...f.bind('state')} /> : <Input label="State / region" {...f.bind('state')} />}
       <Input label="City" autoComplete="address-level2" {...f.bind('city')} />
       <Select label="Property type" options={PROPERTY_TYPES} {...f.bind('property_type')} />
@@ -90,10 +90,10 @@ export default function WelcomePage() {
   const nav = useNavigate();
   const next = safeNext(params.get('next'));
   return (
-    <div className="container-page py-10 sm:py-16">
-      <h1 className="text-[2rem] leading-tight sm:text-4xl">Welcome to KuraSolar</h1>
+    <div className="container-page py-12 sm:py-16">
+      <h1 className="text-3xl leading-tight sm:text-4xl">Welcome to KuraSolar</h1>
       <p className="mt-3 max-w-xl text-muted">A few details so engineers can contact you and your reports carry the right name and location.</p>
-      <Card className="mt-8 max-w-2xl p-5 sm:p-8">
+      <Card className="mt-8 max-w-2xl p-6 sm:p-8">
         <ProfileForm onboarding submitLabel="Save and continue" onSaved={() => nav(next === '/welcome' ? '/account' : next, { replace: true })} />
       </Card>
     </div>

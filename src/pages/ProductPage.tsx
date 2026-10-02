@@ -57,7 +57,7 @@ export default function ProductPage() {
         <Link to="/shop" className="hover:text-primary">Shop</Link>
         {p.product_categories && <> / <Link to={`/shop/${p.product_categories.slug}`} className="hover:text-primary">{p.product_categories.name}</Link></>}
       </nav>
-      <div className="mt-6 grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div className="mt-6 grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <div className="aspect-[5/4] overflow-hidden rounded-[var(--radius-card)] bg-tint">
             <ProductArt src={p.images[img]} role={p.product_role} alt={p.name} />
@@ -74,17 +74,17 @@ export default function ProductPage() {
         </div>
         <div>
           {p.brand && <p className="text-sm text-muted">{p.brand}</p>}
-          <h1 className="mt-1 text-[1.75rem] leading-tight sm:text-4xl">{p.name}</h1>
+          <h1 className="mt-1 text-3xl leading-tight sm:text-4xl">{p.name}</h1>
           <div className="mt-4 flex items-baseline gap-3">
-            <span className="num text-3xl font-bold">{money(p.price, p.currency)}</span>
+            <span className="num text-3xl font-semibold">{money(p.price, p.currency)}</span>
             {p.compare_at_price && Number(p.compare_at_price) > Number(p.price) && <span className="num text-lg text-muted line-through">{money(p.compare_at_price, p.currency)}</span>}
           </div>
           <p className={cn('mt-2 text-sm', out ? 'text-danger' : p.stock_quantity < 5 ? 'text-warning' : 'text-success')}>
             {out ? 'Out of stock' : p.stock_quantity < 5 ? `Only ${p.stock_quantity} left` : 'In stock'}
           </p>
-          {p.short_description && <p className="mt-5 text-[1.0625rem] leading-relaxed text-ink/80">{p.short_description}</p>}
+          {p.short_description && <p className="mt-6 text-base leading-relaxed text-ink/80">{p.short_description}</p>}
 
-          <div className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <div className="flex items-center rounded-full border border-line">
               <button type="button" className="grid size-11 place-items-center text-primary disabled:opacity-30" onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={qty <= 1} aria-label="Decrease quantity"><Minus className="size-4" /></button>
               <span className="num w-10 text-center font-medium">{qty}</span>
@@ -93,16 +93,16 @@ export default function ProductPage() {
             <Button size="lg" onClick={add} disabled={out} icon={<ShoppingBag className="size-4" />}>Add to cart</Button>
             <Button size="lg" variant="secondary" onClick={() => { add(); cart.setOpen(true); }} disabled={out}>Add to quote</Button>
           </div>
-          <p className="mt-5 flex items-start gap-2 text-sm text-muted"><Truck className="mt-0.5 size-4 shrink-0" />{settings.commerce.deliveryNote}</p>
+          <p className="mt-6 flex items-start gap-2 text-sm text-muted"><Truck className="mt-1 size-4 shrink-0" />{settings.commerce.deliveryNote}</p>
 
           {specs.length > 0 && (
             <div className="mt-8">
               <h2 className="text-lg">Specifications</h2>
               <dl className="mt-3 divide-y divide-line border-y border-line text-sm">
                 {specs.map(([k, v]) => (
-                  <div key={k} className="grid grid-cols-[10rem_1fr] gap-4 py-2.5"><dt className="text-muted">{k}</dt><dd>{String(v)}</dd></div>
+                  <div key={k} className="grid grid-cols-[10rem_1fr] gap-4 py-3"><dt className="text-muted">{k}</dt><dd>{String(v)}</dd></div>
                 ))}
-                {p.sku && <div className="grid grid-cols-[10rem_1fr] gap-4 py-2.5"><dt className="text-muted">SKU</dt><dd className="num">{p.sku}</dd></div>}
+                {p.sku && <div className="grid grid-cols-[10rem_1fr] gap-4 py-3"><dt className="text-muted">SKU</dt><dd className="num">{p.sku}</dd></div>}
               </dl>
             </div>
           )}
@@ -110,7 +110,7 @@ export default function ProductPage() {
         </div>
       </div>
       {(related.data?.filter((r) => r.id !== p.id).length ?? 0) > 0 && (
-        <section className="mt-20">
+        <section className="mt-24">
           <h2 className="text-2xl">Often bought with it</h2>
           <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
             {related.data!.filter((r) => r.id !== p.id).slice(0, 4).map((r) => <ProductCard key={r.id} product={r} />)}

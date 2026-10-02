@@ -9,9 +9,9 @@ export default function BlogPage() {
   useSeo({ title: 'Solar knowledge', description: 'Plain explanations of solar sizing, batteries, inverters and installation in Nigeria.' });
   const { data, isLoading } = usePosts();
   return (
-    <div className="container-page py-10 sm:py-14">
+    <div className="container-page py-12 sm:py-16">
       <PageHeader title="Solar knowledge" text="Plain answers to the questions customers ask before buying a system." />
-      <div className="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
         {isLoading && Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-48" />)}
         {data?.map((p) => (
           <Link key={p.id} to={`/blog/${p.slug}`} className="group">

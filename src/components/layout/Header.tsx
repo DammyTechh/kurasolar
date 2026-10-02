@@ -54,17 +54,17 @@ export function Header() {
             <NavLink
               key={n.to}
               to={n.to}
-              className={({ isActive }) => cn('rounded-full px-3.5 py-2 text-[0.95rem] transition-colors', isActive ? 'bg-tint text-primary' : 'text-ink/80 hover:text-primary')}
+              className={({ isActive }) => cn('rounded-full px-4 py-2 text-sm transition-colors', isActive ? 'bg-tint text-primary' : 'text-ink/80 hover:text-primary')}
             >
               {n.label}
             </NavLink>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+        <div className="ml-auto flex items-center gap-2 sm:gap-2">
           <button type="button" onClick={() => cart.setOpen(true)} className="relative grid size-10 place-items-center rounded-full text-ink hover:bg-tint" aria-label={`Cart, ${cart.count} items`}>
             <ShoppingBag className="size-5" />
             {cart.count > 0 && (
-              <span className="num absolute top-0.5 right-0.5 grid min-w-5 place-items-center rounded-full bg-accent px-1 text-[0.7rem] font-bold text-primary-dark">{cart.count}</span>
+              <span className="num absolute top-0.5 right-0.5 grid min-w-5 place-items-center rounded-full bg-accent px-1 text-xs font-semibold text-primary-dark">{cart.count}</span>
             )}
           </button>
           {user ? (
@@ -73,7 +73,7 @@ export function Header() {
               <span className="hidden max-w-[9rem] truncate text-sm font-medium sm:inline">{profile?.full_name?.split(' ')[0] ?? 'Account'}</span>
             </Link>
           ) : (
-            <Link to="/sign-in" className="hidden items-center gap-2 rounded-full px-3 py-2 text-[0.95rem] text-ink/80 hover:text-primary sm:flex">
+            <Link to="/sign-in" className="hidden items-center gap-2 rounded-full px-3 py-2 text-sm text-ink/80 hover:text-primary sm:flex">
               <UserRound className="size-4" /> Sign in
             </Link>
           )}

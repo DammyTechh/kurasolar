@@ -92,9 +92,9 @@ export function OtpSignIn({ collectDetails, defaults, location, submitLabel = 'E
 
   if (stage === 'code') {
     return (
-      <form onSubmit={verify} className="space-y-5">
+      <form onSubmit={verify} className="space-y-6">
         <div className="flex items-start gap-3 rounded-2xl bg-tint p-4">
-          <MailCheck className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden />
+          <MailCheck className="mt-1 size-5 shrink-0 text-primary" aria-hidden />
           <p className="text-sm leading-relaxed text-ink/85">
             We sent a {CODE_LENGTH}-digit code to <strong className="font-medium text-ink">{email}</strong>. It expires in 15 minutes.
           </p>
@@ -111,12 +111,12 @@ export function OtpSignIn({ collectDetails, defaults, location, submitLabel = 'E
             setCode(v);
             setError(null);
           }}
-          className="num h-14 text-center text-2xl tracking-[0.5em]"
+          className="num h-12 text-center text-2xl tracking-[0.5em]"
           error={error}
         />
         <Button type="submit" className="w-full" size="lg" loading={busy}>Verify and continue</Button>
         <div className="flex items-center justify-between text-sm">
-          <button type="button" onClick={() => { setStage('email'); setCode(''); setError(null); }} className="flex items-center gap-1.5 text-muted hover:text-ink">
+          <button type="button" onClick={() => { setStage('email'); setCode(''); setError(null); }} className="flex items-center gap-2 text-muted hover:text-ink">
             <ArrowLeft className="size-4" /> Change email
           </button>
           <button type="button" onClick={() => send()} disabled={cooldown > 0 || busy} className="font-medium text-primary disabled:text-muted">

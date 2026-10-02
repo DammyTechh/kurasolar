@@ -75,7 +75,7 @@ export function ApplianceEditor({ open, appliance, isNew, lookups, onClose, onSa
       onClose={onClose}
       size="lg"
       title={
-        <span className="flex items-center gap-2.5">
+        <span className="flex items-center gap-3">
           <meta.icon className="size-5 text-primary" aria-hidden />
           {isNew ? `Add ${meta.label.toLowerCase()}` : `Edit ${meta.label.toLowerCase()}`}
         </span>
@@ -89,7 +89,7 @@ export function ApplianceEditor({ open, appliance, isNew, lookups, onClose, onSa
         </div>
       }
     >
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         <Input
           wrapClassName="sm:col-span-2"
           label={a.category === 'custom' ? 'Appliance name' : 'Label'}
@@ -213,14 +213,14 @@ export function ApplianceEditor({ open, appliance, isNew, lookups, onClose, onSa
         )}
       </div>
 
-      {meta.hint && <p className="mt-5 rounded-xl bg-tint px-4 py-3 text-sm leading-relaxed text-ink/80">{meta.hint}</p>}
+      {meta.hint && <p className="mt-6 rounded-xl bg-tint px-4 py-3 text-sm leading-relaxed text-ink/80">{meta.hint}</p>}
 
-      <button type="button" onClick={() => setAdvanced((v) => !v)} className="mt-5 flex items-center gap-1.5 text-sm font-medium text-primary" aria-expanded={advanced}>
+      <button type="button" onClick={() => setAdvanced((v) => !v)} className="mt-6 flex items-center gap-2 text-sm font-medium text-primary" aria-expanded={advanced}>
         <ChevronDown className={cn('size-4 transition-transform', advanced && 'rotate-180')} />
         Engineering details
       </button>
       {advanced && (
-        <div className="mt-4 grid gap-5 border-t border-line pt-5 sm:grid-cols-2">
+        <div className="mt-4 grid gap-6 border-t border-line pt-6 sm:grid-cols-2">
           <NumberStepper
             label="Duty cycle"
             unit="%"

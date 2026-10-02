@@ -32,7 +32,7 @@ export function AssessmentList({ limit }: { limit?: number }) {
     <ul className="divide-y divide-line rounded-[var(--radius-card)] border border-line bg-white">
       {data.slice(0, limit).map((a) => (
         <li key={a.id}>
-          <Link to={`/assessments/${a.id}`} className="flex flex-wrap items-center gap-x-6 gap-y-2 p-4 hover:bg-surface/60 sm:p-5">
+          <Link to={`/assessments/${a.id}`} className="flex flex-wrap items-center gap-x-6 gap-y-2 p-4 hover:bg-surface/60 sm:p-6">
             <div className="min-w-0 flex-1">
               <p className="num font-medium">{a.code}</p>
               <p className="text-sm text-muted">{[a.city, a.state].filter(Boolean).join(", ")}, {date(a.created_at)}</p>
@@ -59,16 +59,16 @@ export function AccountHomePage() {
     { label: 'Installer requests', v: r.data?.length ?? 0, to: '/account/requests', icon: Wrench },
   ];
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <div>
         <h1 className="text-2xl sm:text-3xl">Hello{profile?.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}</h1>
         <p className="mt-2 text-muted">Everything about your solar project in one place.</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         {stats.map((s) => (
-          <Link key={s.label} to={s.to} className="rounded-[var(--radius-card)] border border-line bg-white p-5 hover:border-primary/40">
+          <Link key={s.label} to={s.to} className="rounded-[var(--radius-card)] border border-line bg-white p-6 hover:border-primary/40">
             <s.icon className="size-5 text-primary" />
-            <p className="num mt-4 text-3xl font-bold">{s.v}</p>
+            <p className="num mt-4 text-3xl font-semibold">{s.v}</p>
             <p className="text-sm text-muted">{s.label}</p>
           </Link>
         ))}
@@ -95,10 +95,10 @@ export function AccountOrdersPage() {
       ) : (
         <div className="space-y-4">
           {data.map((o) => (
-            <Card key={o.id} className="p-5">
+            <Card key={o.id} className="p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div><p className="num font-medium">{o.code}</p><p className="text-sm text-muted">{date(o.created_at)}</p></div>
-                <div className="flex items-center gap-3"><span className="num font-bold">{money(o.total, o.currency)}</span><StatusBadge status={o.status} /></div>
+                <div className="flex items-center gap-3"><span className="num font-semibold">{money(o.total, o.currency)}</span><StatusBadge status={o.status} /></div>
               </div>
               <ul className="mt-4 space-y-1 border-t border-line pt-4 text-sm">
                 {o.order_items?.map((i) => <li key={i.id} className="flex justify-between gap-4"><span>{i.quantity} × {i.product_name}</span><span className="num text-muted">{money(i.line_total, o.currency)}</span></li>)}
@@ -147,7 +147,7 @@ export function AccountRequestsPage() {
       {isLoading ? <Loading /> : !data?.length ? <EmptyState icon={<Wrench className="size-5" />} title="No requests yet" text="Ask us to match you with verified installers in your state." /> : (
         <ul className="divide-y divide-line rounded-[var(--radius-card)] border border-line bg-white">
           {data.map((r) => (
-            <li key={r.id} className="flex flex-wrap items-center gap-x-6 gap-y-2 p-4 sm:p-5">
+            <li key={r.id} className="flex flex-wrap items-center gap-x-6 gap-y-2 p-4 sm:p-6">
               <div className="min-w-0 flex-1"><p className="num font-medium">{r.code}</p><p className="text-sm text-muted">{[r.city, r.state].filter(Boolean).join(', ')}, {date(r.created_at)}</p></div>
               {r.system_size && <span className="text-sm text-muted">{r.system_size}</span>}
               <StatusBadge status={r.status} />
@@ -176,7 +176,7 @@ export function AccountSavedPage() {
       {isLoading ? <Loading /> : !data?.length ? <EmptyState icon={<ListChecks className="size-5" />} title="Nothing saved" text="Save an appliance list from the calculator’s review step to reuse it later." /> : (
         <ul className="divide-y divide-line rounded-[var(--radius-card)] border border-line bg-white">
           {data.map((s) => (
-            <li key={s.id} className="flex flex-wrap items-center gap-4 p-4 sm:p-5">
+            <li key={s.id} className="flex flex-wrap items-center gap-4 p-4 sm:p-6">
               <div className="min-w-0 flex-1"><p className="font-medium">{s.name}</p><p className="text-sm text-muted">{s.appliances.length} appliances, saved {date(s.updated_at)}</p></div>
               <Button size="sm" onClick={() => { seedDraft(s.appliances as ApplianceInput[]); nav('/solar-calculator'); }}>Use in calculator</Button>
               <Button size="sm" variant="ghost" onClick={() => remove(s.id)}>Delete</Button>
@@ -190,6 +190,6 @@ export function AccountSavedPage() {
 
 export function AccountProfilePage() {
   useSeo({ title: 'Profile', noindex: true });
-  return <Section title="Profile"><Card className="max-w-2xl p-5 sm:p-8"><ProfileForm submitLabel="Save changes" /></Card></Section>;
+  return <Section title="Profile"><Card className="max-w-2xl p-6 sm:p-8"><ProfileForm submitLabel="Save changes" /></Card></Section>;
 }
 

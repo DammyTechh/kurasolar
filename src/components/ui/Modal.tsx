@@ -53,17 +53,17 @@ export function Modal({ open, onClose, title, children, footer, side = 'center',
             transition={{ type: 'spring', stiffness: 380, damping: 36 }}
             className={cn(
               'relative flex max-h-[92dvh] w-full flex-col bg-white shadow-2xl focus:outline-none',
-              isRight ? 'h-full max-h-none max-w-md' : cn('rounded-t-3xl sm:rounded-3xl', widths[size]),
+              isRight ? 'h-full max-h-none max-w-md' : cn('rounded-t-2xl sm:rounded-2xl', widths[size]),
             )}
           >
-            <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
-              <h2 className="text-lg font-bold">{title}</h2>
+            <div className="flex items-center justify-between gap-4 border-b border-line px-6 py-4 sm:px-6">
+              <h2 className="text-lg font-semibold">{title}</h2>
               <button type="button" onClick={onClose} className="grid size-9 place-items-center rounded-full text-muted hover:bg-tint hover:text-ink" aria-label="Close">
                 <X className="size-5" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-5 py-5 sm:px-6">{children}</div>
-            {footer && <div className="border-t border-line px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">{footer}</div>}
+            <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-6">{children}</div>
+            {footer && <div className="border-t border-line px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">{footer}</div>}
           </motion.div>
         </div>
       )}

@@ -5,8 +5,8 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
   return (
     <div className="divide-y divide-line border-y border-line">
       {items.map((it) => (
-        <details key={it.q} className="group py-5">
-          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-[1.0625rem] font-medium [&::-webkit-details-marker]:hidden">
+        <details key={it.q} className="group py-6">
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-base font-medium [&::-webkit-details-marker]:hidden">
             {it.q}
             <Plus className={cn('mt-1 size-5 shrink-0 text-primary transition-transform group-open:rotate-45')} />
           </summary>

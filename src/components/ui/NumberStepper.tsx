@@ -40,9 +40,9 @@ export function NumberStepper({ label, value, onChange, min = 0, max = 9999, ste
   );
 
   return (
-    <div className={cn('flex flex-col gap-1.5', className)}>
+    <div className={cn('flex flex-col gap-2', className)}>
       {label && <label htmlFor={id} className="text-sm font-medium text-ink">{label}</label>}
-      <div className={cn('flex items-center gap-2 rounded-full border border-line bg-white p-1', size === 'lg' && 'p-1.5')}>
+      <div className={cn('flex items-center gap-2 rounded-full border border-line bg-white p-1', size === 'lg' && 'p-2')}>
         <button type="button" className={btn} onClick={() => onChange(clamp(value - step))} disabled={value <= min} aria-label={`Decrease ${label ?? 'value'}`}>
           <Minus className="size-4" />
         </button>
