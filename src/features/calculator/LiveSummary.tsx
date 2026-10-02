@@ -10,7 +10,7 @@ function Counter({ value, dp = 1 }: { value: number; dp?: number }) {
   const text = useTransform(mv, (v) => num(v, dp));
   useEffect(() => {
     const c = animate(mv, value, { duration: 0.45, ease: 'easeOut' });
-    return c.stop;
+    return () => c.stop();
   }, [value, mv]);
   return <motion.span className="num">{text}</motion.span>;
 }

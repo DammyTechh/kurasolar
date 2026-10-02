@@ -19,7 +19,9 @@ interface Props {
 export function NumberStepper({ label, value, onChange, min = 0, max = 9999, step = 1, unit, hint, size = 'md', className }: Props) {
   const id = useId();
   const [draft, setDraft] = useState(String(value));
-  useEffect(() => setDraft(String(value)), [value]);
+  useEffect(() => {
+    setDraft(String(value));
+  }, [value]);
 
   const clamp = (n: number) => {
     const snapped = Math.round(n / step) * step;
