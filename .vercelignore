@@ -1,6 +1,8 @@
-# The Vercel build only needs the frontend. Edge functions and the database
-# live in Supabase and are deployed with the Supabase CLI.
-supabase
+# The Vercel build only needs the frontend plus the shared calculator engine.
+# `supabase/functions/_shared/engine/client.ts` is imported by the app through the
+# `@engine` alias (vite.config.ts and tsconfig.json), so the `supabase` folder
+# must be uploaded. Do NOT ignore it.
+# Edge functions and the database are deployed with the Supabase CLI instead.
 docs
 scripts
 HANDOVER.md
